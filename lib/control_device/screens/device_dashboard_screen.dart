@@ -5,6 +5,7 @@ import '../providers/device_control_provider.dart';
 import '../models/device_state.dart';
 import 'automation_view.dart';
 import 'activity_view.dart';
+import 'settings_view.dart';
 
 final activeTabProvider = StateProvider<int>((ref) => 0);
 
@@ -841,16 +842,7 @@ class DeviceDashboardScreen extends ConsumerWidget {
                     ? const SingleChildScrollView(child: AutomationView())
                     : activeTab == 2
                     ? const ActivityView()
-                    : const Center(
-                        child: Text(
-                          'Settings Panel',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: textGrey,
-                          ),
-                        ),
-                      ),
+                    : const SettingsView(),
               ),
             ),
           ],
