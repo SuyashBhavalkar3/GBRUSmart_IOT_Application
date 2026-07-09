@@ -3,6 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'authorized_numbers.dart';
 import '../settings/screens/missed-call-mode.dart';
 import '../settings/screens/start-type.dart';
+import '../settings/screens/voltage_protection_screen.dart';
+import '../settings/screens/current_protection_screen.dart';
+import '../settings/screens/sim_balance_screen.dart';
 
 const Color primaryGreen = Color(0xFF00A859);
 const Color bgMint = Color(0xFFF0F9F4);
@@ -204,14 +207,21 @@ class SettingsView extends ConsumerWidget {
         const SizedBox(height: 12),
 
         // SIM Balance Grid card (takes full width)
-        _buildGridCardFullWidth(
-          icon: Icons.sim_card_outlined,
-          iconColor: primaryGreen,
-          iconBgColor: const Color(0xFFE6F7ED),
-          title: 'SIM Balance',
-          value: '₹24.50',
-          subtitle: 'Last received: ₹24.50',
-          footer: 'Received at: 6:30pm 16/03/2026',
+        GestureDetector(
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => const SimBalanceScreen()),
+            );
+          },
+          child: _buildGridCardFullWidth(
+            icon: Icons.sim_card_outlined,
+            iconColor: primaryGreen,
+            iconBgColor: const Color(0xFFE6F7ED),
+            title: 'SIM Balance',
+            value: '₹24.50',
+            subtitle: 'Last received: ₹24.50',
+            footer: 'Received at: 6:30pm 16/03/2026',
+          ),
         ),
         const SizedBox(height: 24),
 
@@ -293,6 +303,13 @@ class SettingsView extends ConsumerWidget {
           iconBgColor: const Color(0xFFFEF3C7),
           title: 'Voltage Protection',
           description: 'Set minimum and maximum voltage limits.',
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const VoltageProtectionScreen(),
+              ),
+            );
+          },
         ),
         _buildSettingsMenuCard(
           icon: Icons.error_outline_rounded,
@@ -300,6 +317,13 @@ class SettingsView extends ConsumerWidget {
           iconBgColor: const Color(0xFFFEE2E2),
           title: 'Current Protection',
           description: 'Set motor current safety limits.',
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const CurrentProtectionScreen(),
+              ),
+            );
+          },
         ),
         const SizedBox(height: 16),
 
@@ -312,6 +336,11 @@ class SettingsView extends ConsumerWidget {
           title: 'SIM Balance',
           description:
               'Check remaining balance of the SIM card inside the device.',
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => const SimBalanceScreen()),
+            );
+          },
         ),
       ],
     );
@@ -473,54 +502,58 @@ class SettingsView extends ConsumerWidget {
     required Color iconBgColor,
     required String title,
     required String description,
+    VoidCallback? onTap,
   }) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: borderGrey),
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 40,
-            height: 40,
-            decoration: BoxDecoration(
-              color: iconBgColor,
-              shape: BoxShape.circle,
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 12),
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: borderGrey),
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: 40,
+              height: 40,
+              decoration: BoxDecoration(
+                color: iconBgColor,
+                shape: BoxShape.circle,
+              ),
+              child: Icon(icon, color: iconColor, size: 20),
             ),
-            child: Icon(icon, color: iconColor, size: 20),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                    color: textDark,
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                      color: textDark,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 2),
-                Text(
-                  description,
-                  style: const TextStyle(
-                    fontSize: 12,
-                    color: textGrey,
-                    height: 1.3,
+                  const SizedBox(height: 2),
+                  Text(
+                    description,
+                    style: const TextStyle(
+                      fontSize: 12,
+                      color: textGrey,
+                      height: 1.3,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          const SizedBox(width: 8),
-          const Icon(Icons.chevron_right, color: Colors.grey),
-        ],
+            const SizedBox(width: 8),
+            const Icon(Icons.chevron_right, color: Colors.grey),
+          ],
+        ),
       ),
     );
   }
