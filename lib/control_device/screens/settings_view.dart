@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'authorized_numbers.dart';
+import '../settings/screens/missed-call-mode.dart';
+import '../settings/screens/start-type.dart';
 
 const Color primaryGreen = Color(0xFF00A859);
 const Color bgMint = Color(0xFFF0F9F4);
@@ -214,30 +217,57 @@ class SettingsView extends ConsumerWidget {
 
         // Group 1: DEVICE ACCESS
         _buildCategoryHeader('DEVICE ACCESS'),
-        _buildSettingsMenuCard(
-          icon: Icons.people_outline,
-          iconColor: blueColor,
-          iconBgColor: blueBg,
-          title: 'Authorized Numbers',
-          description: 'Manage phone numbers allowed to control the device.',
+        GestureDetector(
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const AuthorizedNumbersScreen(),
+              ),
+            );
+          },
+          child: _buildSettingsMenuCard(
+            icon: Icons.people_outline,
+            iconColor: blueColor,
+            iconBgColor: blueBg,
+            title: 'Authorized Numbers',
+            description: 'Manage phone numbers allowed to control the device.',
+          ),
         ),
-        _buildSettingsMenuCard(
-          icon: Icons.phone_callback_outlined,
-          iconColor: const Color(0xFF7C3AED),
-          iconBgColor: const Color(0xFFF5F3FF),
-          title: 'Missed Call Mode',
-          description: 'Enable motor control using missed calls.',
+        GestureDetector(
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const MissedCallModeScreen(),
+              ),
+            );
+          },
+          child: _buildSettingsMenuCard(
+            icon: Icons.phone_callback_outlined,
+            iconColor: const Color(0xFF7C3AED),
+            iconBgColor: const Color(0xFFF5F3FF),
+            title: 'Missed Call Mode',
+            description: 'Enable motor control using missed calls.',
+          ),
         ),
         const SizedBox(height: 16),
 
         // Group 2: MOTOR CONFIGURATION
         _buildCategoryHeader('MOTOR CONFIGURATION'),
-        _buildSettingsMenuCard(
-          icon: Icons.settings_outlined,
-          iconColor: primaryGreen,
-          iconBgColor: const Color(0xFFE6F7ED),
-          title: 'Starter Type',
-          description: 'Configure motor starter type (Direct / Star-Delta).',
+        GestureDetector(
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const StarterTypeScreen(),
+              ),
+            );
+          },
+          child: _buildSettingsMenuCard(
+            icon: Icons.settings_outlined,
+            iconColor: primaryGreen,
+            iconBgColor: const Color(0xFFE6F7ED),
+            title: 'Starter Type',
+            description: 'Configure motor starter type (Direct / Star-Delta).',
+          ),
         ),
         _buildSettingsMenuCard(
           icon: Icons.av_timer,
