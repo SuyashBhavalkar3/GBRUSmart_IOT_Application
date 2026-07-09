@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../settings/screens/voltage_protection_screen.dart';
 import '../settings/screens/current_protection_screen.dart';
+import '../settings/screens/sim_balance_screen.dart';
 
 const Color primaryGreen = Color(0xFF00A859);
 const Color bgMint = Color(0xFFF0F9F4);
@@ -203,14 +204,21 @@ class SettingsView extends ConsumerWidget {
         const SizedBox(height: 12),
 
         // SIM Balance Grid card (takes full width)
-        _buildGridCardFullWidth(
-          icon: Icons.sim_card_outlined,
-          iconColor: primaryGreen,
-          iconBgColor: const Color(0xFFE6F7ED),
-          title: 'SIM Balance',
-          value: '₹24.50',
-          subtitle: 'Last received: ₹24.50',
-          footer: 'Received at: 6:30pm 16/03/2026',
+        GestureDetector(
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => const SimBalanceScreen()),
+            );
+          },
+          child: _buildGridCardFullWidth(
+            icon: Icons.sim_card_outlined,
+            iconColor: primaryGreen,
+            iconBgColor: const Color(0xFFE6F7ED),
+            title: 'SIM Balance',
+            value: '₹24.50',
+            subtitle: 'Last received: ₹24.50',
+            footer: 'Received at: 6:30pm 16/03/2026',
+          ),
         ),
         const SizedBox(height: 24),
 
@@ -298,6 +306,11 @@ class SettingsView extends ConsumerWidget {
           title: 'SIM Balance',
           description:
               'Check remaining balance of the SIM card inside the device.',
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => const SimBalanceScreen()),
+            );
+          },
         ),
       ],
     );
