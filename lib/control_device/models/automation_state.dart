@@ -7,6 +7,12 @@ class AutomationState {
   final bool cyclicModeEnabled;
   final String cyclicModeStatus;
 
+  // Command status flags for simulated SMS updates
+  final bool isSendingCommand;
+  final bool showSuccessDialog;
+  final bool showFailureDialog;
+  final bool simulateFailure;
+
   AutomationState({
     required this.autoStartEnabled,
     required this.autoStartDelay,
@@ -15,6 +21,10 @@ class AutomationState {
     required this.dailyScheduleStatus,
     required this.cyclicModeEnabled,
     required this.cyclicModeStatus,
+    this.isSendingCommand = false,
+    this.showSuccessDialog = false,
+    this.showFailureDialog = false,
+    this.simulateFailure = false,
   });
 
   AutomationState copyWith({
@@ -25,6 +35,10 @@ class AutomationState {
     String? dailyScheduleStatus,
     bool? cyclicModeEnabled,
     String? cyclicModeStatus,
+    bool? isSendingCommand,
+    bool? showSuccessDialog,
+    bool? showFailureDialog,
+    bool? simulateFailure,
   }) {
     return AutomationState(
       autoStartEnabled: autoStartEnabled ?? this.autoStartEnabled,
@@ -34,6 +48,10 @@ class AutomationState {
       dailyScheduleStatus: dailyScheduleStatus ?? this.dailyScheduleStatus,
       cyclicModeEnabled: cyclicModeEnabled ?? this.cyclicModeEnabled,
       cyclicModeStatus: cyclicModeStatus ?? this.cyclicModeStatus,
+      isSendingCommand: isSendingCommand ?? this.isSendingCommand,
+      showSuccessDialog: showSuccessDialog ?? this.showSuccessDialog,
+      showFailureDialog: showFailureDialog ?? this.showFailureDialog,
+      simulateFailure: simulateFailure ?? this.simulateFailure,
     );
   }
 }
