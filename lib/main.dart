@@ -1,19 +1,26 @@
 import 'package:flutter/material.dart';
 import 'authentication/screens/splash_screen.dart';
 import 'authentication/screens/login_screen.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'home_dashboard/screens/home_dashboard_screen.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    // Wrap the entire app in a ProviderScope to enable Riverpod state management.
+    const ProviderScope(
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Motor Mitra Smart',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -124,11 +131,6 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
       ),
     );
   }

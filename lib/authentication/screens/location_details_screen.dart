@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../providers/location_details_provider.dart';
 import 'profile_completed_screen.dart';
+import '../../home_dashboard/screens/home_dashboard_screen.dart';
 
 class LocationDetailsScreen extends StatefulWidget {
   final VoidCallback? onBackPressed;
@@ -226,7 +227,15 @@ class _LocationDetailsScreenState extends State<LocationDetailsScreen> {
                                                 Navigator.push(
                                                   context,
                                                   MaterialPageRoute(
-                                                    builder: (context) => const ProfileCompletedScreen(),
+                                                    builder: (context) => ProfileCompletedScreen(
+                                                      onGoToHome: () {
+                                                        Navigator.pushAndRemoveUntil(
+                                                          context,
+                                                          MaterialPageRoute(builder: (context) => const HomeDashboardScreen()),
+                                                          (route) => false,
+                                                        );
+                                                      },
+                                                    ),
                                                   ),
                                                 );
                                                 widget.onSaveAndContinue?.call();
