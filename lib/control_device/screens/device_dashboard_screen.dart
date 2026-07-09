@@ -3,12 +3,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import '../providers/device_control_provider.dart';
 import '../models/device_state.dart';
+import 'automation_view.dart';
+
+final activeTabProvider = StateProvider<int>((ref) => 0);
 
 class DeviceDashboardScreen extends ConsumerWidget {
   const DeviceDashboardScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final activeTab = ref.watch(activeTabProvider);
+
     ref.listen<DeviceState>(deviceControlProvider, (previous, next) {
       // Loader dialog trigger
       if (next.isSendingCommand && !(previous?.isSendingCommand ?? false)) {
@@ -17,7 +22,8 @@ class DeviceDashboardScreen extends ConsumerWidget {
           barrierDismissible: false,
           builder: (context) => const _SendingCommandDialog(),
         );
-      } else if (!next.isSendingCommand && (previous?.isSendingCommand ?? false)) {
+      } else if (!next.isSendingCommand &&
+          (previous?.isSendingCommand ?? false)) {
         Navigator.of(context, rootNavigator: true).pop();
       }
 
@@ -121,7 +127,11 @@ class DeviceDashboardScreen extends ConsumerWidget {
                                 color: Colors.grey[100],
                                 shape: BoxShape.circle,
                               ),
-                              child: const Icon(Icons.edit, size: 14, color: textGrey),
+                              child: const Icon(
+                                Icons.edit,
+                                size: 14,
+                                color: textGrey,
+                              ),
                             ),
                           ),
                         ],
@@ -129,10 +139,7 @@ class DeviceDashboardScreen extends ConsumerWidget {
                       const SizedBox(height: 2),
                       Text(
                         deviceState.type,
-                        style: const TextStyle(
-                          fontSize: 14,
-                          color: textGrey,
-                        ),
+                        style: const TextStyle(fontSize: 14, color: textGrey),
                       ),
                       Text(
                         deviceState.serialNumber,
@@ -164,40 +171,72 @@ class DeviceDashboardScreen extends ConsumerWidget {
                 ),
                 child: Row(
                   children: [
+                    // Tab 0: Control
                     Expanded(
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        decoration: BoxDecoration(
-                          color: primaryGreen,
-                          borderRadius: BorderRadius.circular(25),
-                          boxShadow: [
-                            BoxShadow(
-                              color: primaryGreen.withOpacity(0.3),
-                              blurRadius: 8,
-                              offset: const Offset(0, 4),
-                            ),
-                          ],
-                        ),
-                        child: const Center(
-                          child: Text(
-                            'Control',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 14,
+                      child: GestureDetector(
+                        onTap: () =>
+                            ref.read(activeTabProvider.notifier).state = 0,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          decoration: BoxDecoration(
+                            color: activeTab == 0
+                                ? primaryGreen
+                                : Colors.transparent,
+                            borderRadius: BorderRadius.circular(25),
+                            boxShadow: activeTab == 0
+                                ? [
+                                    BoxShadow(
+                                      color: primaryGreen.withAlpha(76),
+                                      blurRadius: 8,
+                                      offset: const Offset(0, 4),
+                                    ),
+                                  ]
+                                : null,
+                          ),
+                          child: Center(
+                            child: Text(
+                              'Control',
+                              style: TextStyle(
+                                color: activeTab == 0 ? Colors.white : textGrey,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                              ),
                             ),
                           ),
                         ),
                       ),
                     ),
-                    const Expanded(
-                      child: Center(
-                        child: Text(
-                          'Automation',
-                          style: TextStyle(
-                            color: textGrey,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 14,
+                    // Tab 1: Automation
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () =>
+                            ref.read(activeTabProvider.notifier).state = 1,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          decoration: BoxDecoration(
+                            color: activeTab == 1
+                                ? primaryGreen
+                                : Colors.transparent,
+                            borderRadius: BorderRadius.circular(25),
+                            boxShadow: activeTab == 1
+                                ? [
+                                    BoxShadow(
+                                      color: primaryGreen.withAlpha(76),
+                                      blurRadius: 8,
+                                      offset: const Offset(0, 4),
+                                    ),
+                                  ]
+                                : null,
+                          ),
+                          child: Center(
+                            child: Text(
+                              'Automation',
+                              style: TextStyle(
+                                color: activeTab == 1 ? Colors.white : textGrey,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                              ),
+                            ),
                           ),
                         ),
                       ),
@@ -234,432 +273,478 @@ class DeviceDashboardScreen extends ConsumerWidget {
             Expanded(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Motor Status',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: textDark,
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-
-                    // Motor Status Card
-                    Container(
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(24),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.04),
-                            blurRadius: 16,
-                            offset: const Offset(0, 8),
-                          ),
-                        ],
-                      ),
-                      child: Row(
+                child: activeTab == 0
+                    ? Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Expanded(
+                          const Text(
+                            'Motor Status',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: textDark,
+                            ),
+                          ),
+                          const SizedBox(height: 12),
+
+                          // Motor Status Card
+                          Container(
+                            padding: const EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(24),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.04),
+                                  blurRadius: 16,
+                                  offset: const Offset(0, 8),
+                                ),
+                              ],
+                            ),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Container(
+                                            padding: const EdgeInsets.all(10),
+                                            decoration: BoxDecoration(
+                                              color: Colors.grey[100],
+                                              shape: BoxShape.circle,
+                                            ),
+                                            child: Icon(
+                                              Icons.power_settings_new,
+                                              color: deviceState.isMotorRunning
+                                                  ? primaryGreen
+                                                  : textGrey,
+                                              size: 24,
+                                            ),
+                                          ),
+                                          const SizedBox(width: 12),
+                                          const Text(
+                                            'Motor Status',
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                              color: textDark,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 16),
+                                      Text(
+                                        deviceState.isMotorRunning
+                                            ? 'Motor Running'
+                                            : 'Motor Stopped',
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w800,
+                                          color: deviceState.isMotorRunning
+                                              ? primaryGreen
+                                              : textDark,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 4),
+                                      Text(
+                                        'Sent at $formattedTime',
+                                        style: const TextStyle(
+                                          fontSize: 13,
+                                          color: textGrey,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 8),
+                                      const Text(
+                                        'Device confirmation will arrive via SMS.',
+                                        style: TextStyle(
+                                          fontSize: 11,
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                // Motor Status image from assets
+                                Image.asset(
+                                  'assets/control_home_assets/motor_image.png',
+                                  width: 100,
+                                  height: 120,
+                                  fit: BoxFit.contain,
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return Container(
+                                      width: 100,
+                                      height: 120,
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey[100],
+                                        borderRadius: BorderRadius.circular(12),
+                                        border: Border.all(color: borderGrey),
+                                      ),
+                                      child: const Icon(
+                                        Icons.broken_image_outlined,
+                                        color: Colors.grey,
+                                        size: 32,
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+
+                          // Command Action Buttons
+                          Row(
+                            children: [
+                              Expanded(
+                                child: ElevatedButton(
+                                  onPressed: deviceState.isSendingCommand
+                                      ? null
+                                      : () => controlNotifier.startMotor(),
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: primaryGreen,
+                                    foregroundColor: Colors.white,
+                                    elevation: 4,
+                                    shadowColor: primaryGreen.withOpacity(0.4),
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 16,
+                                    ),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(40),
+                                    ),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        padding: const EdgeInsets.all(4),
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          border: Border.all(
+                                            color: Colors.white,
+                                            width: 2,
+                                          ),
+                                        ),
+                                        child: const Icon(
+                                          Icons.power_settings_new,
+                                          size: 16,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 10),
+                                      const Text(
+                                        'START\nMOTOR',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 13,
+                                          height: 1.1,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 16),
+                              Expanded(
+                                child: ElevatedButton(
+                                  onPressed: deviceState.isSendingCommand
+                                      ? null
+                                      : () => controlNotifier.stopMotor(),
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: stopRed,
+                                    foregroundColor: Colors.white,
+                                    elevation: 4,
+                                    shadowColor: stopRed.withOpacity(0.4),
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 16,
+                                    ),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(40),
+                                    ),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        padding: const EdgeInsets.all(4),
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          border: Border.all(
+                                            color: Colors.white,
+                                            width: 2,
+                                          ),
+                                        ),
+                                        child: const Icon(
+                                          Icons.power_settings_new,
+                                          size: 16,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 10),
+                                      const Text(
+                                        'STOP\nMOTOR',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 13,
+                                          height: 1.1,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 20),
+
+                          // Status details (Loading overlay or text)
+                          if (deviceState.isSendingCommand)
+                            const Center(
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(vertical: 8.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    SizedBox(
+                                      width: 16,
+                                      height: 16,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                        valueColor:
+                                            AlwaysStoppedAnimation<Color>(
+                                              primaryGreen,
+                                            ),
+                                      ),
+                                    ),
+                                    SizedBox(width: 12),
+                                    Text(
+                                      'Sending command via SMS/Call...',
+                                      style: TextStyle(
+                                        color: primaryGreen,
+                                        fontSize: 13,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+
+                          // Check Status & Call Device Buttons
+                          Row(
+                            children: [
+                              Expanded(
+                                child: OutlinedButton.icon(
+                                  onPressed: deviceState.isSendingCommand
+                                      ? null
+                                      : () => controlNotifier.checkStatus(),
+                                  icon: const Icon(
+                                    Icons.phonelink_setup,
+                                    size: 18,
+                                  ),
+                                  label: const Text('Check Status'),
+                                  style: OutlinedButton.styleFrom(
+                                    foregroundColor: textDark,
+                                    side: const BorderSide(color: Colors.grey),
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 14,
+                                    ),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(16),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 16),
+                              Expanded(
+                                child: OutlinedButton.icon(
+                                  onPressed: deviceState.isSendingCommand
+                                      ? null
+                                      : () => controlNotifier.callDevice(),
+                                  icon: const Icon(
+                                    Icons.phone_in_talk_outlined,
+                                    size: 18,
+                                  ),
+                                  label: const Text('Call Device'),
+                                  style: OutlinedButton.styleFrom(
+                                    foregroundColor: textDark,
+                                    side: const BorderSide(color: Colors.grey),
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 14,
+                                    ),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(16),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 24),
+
+                          // Auto Mode Section
+                          Container(
+                            padding: const EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(24),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.03),
+                                  blurRadius: 12,
+                                  offset: const Offset(0, 6),
+                                ),
+                              ],
+                            ),
                             child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Row(
                                   children: [
                                     Container(
                                       padding: const EdgeInsets.all(10),
-                                      decoration: BoxDecoration(
-                                        color: Colors.grey[100],
+                                      decoration: const BoxDecoration(
+                                        gradient: LinearGradient(
+                                          colors: [
+                                            Color(0xFF5B86E5),
+                                            Color(0xFF36D1DC),
+                                          ],
+                                          begin: Alignment.topLeft,
+                                          end: Alignment.bottomRight,
+                                        ),
                                         shape: BoxShape.circle,
                                       ),
-                                      child: Icon(
-                                        Icons.power_settings_new,
-                                        color: deviceState.isMotorRunning
-                                            ? primaryGreen
-                                            : textGrey,
+                                      child: const Icon(
+                                        Icons.settings,
+                                        color: Colors.white,
                                         size: 24,
                                       ),
                                     ),
-                                    const SizedBox(width: 12),
-                                    const Text(
-                                      'Motor Status',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        color: textDark,
+                                    const SizedBox(width: 16),
+                                    const Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            'Auto Mode',
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                              color: textDark,
+                                            ),
+                                          ),
+                                          SizedBox(height: 2),
+                                          Text(
+                                            'Smart control active',
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              color: textGrey,
+                                            ),
+                                          ),
+                                        ],
                                       ),
+                                    ),
+                                    Switch(
+                                      value: deviceState.isAutoModeOn,
+                                      activeThumbColor: Colors.white,
+                                      activeTrackColor: blueAccent,
+                                      inactiveThumbColor: Colors.white,
+                                      inactiveTrackColor: Colors.grey[300],
+                                      onChanged: (value) {
+                                        controlNotifier.toggleAutoMode(value);
+                                      },
                                     ),
                                   ],
                                 ),
-                                const SizedBox(height: 16),
-                                Text(
-                                  deviceState.isMotorRunning
-                                      ? 'Motor Running'
-                                      : 'Motor Stopped',
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w800,
-                                    color: deviceState.isMotorRunning
-                                        ? primaryGreen
-                                        : textDark,
-                                  ),
-                                ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  'Sent at $formattedTime',
-                                  style: const TextStyle(
-                                    fontSize: 13,
-                                    color: textGrey,
-                                  ),
-                                ),
-                                const SizedBox(height: 8),
-                                const Text(
-                                  'Device confirmation will arrive via SMS.',
-                                  style: TextStyle(
-                                    fontSize: 11,
-                                    color: Colors.grey,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          // Motor Status image from assets
-                          Image.asset(
-                            'assets/control_home_assets/motor_image.png',
-                            width: 100,
-                            height: 120,
-                            fit: BoxFit.contain,
-                            errorBuilder: (context, error, stackTrace) {
-                              return Container(
-                                width: 100,
-                                height: 120,
-                                decoration: BoxDecoration(
-                                  color: Colors.grey[100],
-                                  borderRadius: BorderRadius.circular(12),
-                                  border: Border.all(color: borderGrey),
-                                ),
-                                child: const Icon(
-                                  Icons.broken_image_outlined,
-                                  color: Colors.grey,
-                                  size: 32,
-                                ),
-                              );
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-
-                    // Command Action Buttons
-                    Row(
-                      children: [
-                        Expanded(
-                          child: ElevatedButton(
-                            onPressed: deviceState.isSendingCommand
-                                ? null
-                                : () => controlNotifier.startMotor(),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: primaryGreen,
-                              foregroundColor: Colors.white,
-                              elevation: 4,
-                              shadowColor: primaryGreen.withOpacity(0.4),
-                              padding: const EdgeInsets.symmetric(vertical: 16),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(40),
-                              ),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Container(
-                                  padding: const EdgeInsets.all(4),
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    border: Border.all(color: Colors.white, width: 2),
-                                  ),
-                                  child: const Icon(Icons.power_settings_new, size: 16),
-                                ),
-                                const SizedBox(width: 10),
-                                const Text(
-                                  'START\nMOTOR',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 13,
-                                    height: 1.1,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: ElevatedButton(
-                            onPressed: deviceState.isSendingCommand
-                                ? null
-                                : () => controlNotifier.stopMotor(),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: stopRed,
-                              foregroundColor: Colors.white,
-                              elevation: 4,
-                              shadowColor: stopRed.withOpacity(0.4),
-                              padding: const EdgeInsets.symmetric(vertical: 16),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(40),
-                              ),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Container(
-                                  padding: const EdgeInsets.all(4),
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    border: Border.all(color: Colors.white, width: 2),
-                                  ),
-                                  child: const Icon(Icons.power_settings_new, size: 16),
-                                ),
-                                const SizedBox(width: 10),
-                                const Text(
-                                  'STOP\nMOTOR',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 13,
-                                    height: 1.1,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-
-                    // Status details (Loading overlay or text)
-                    if (deviceState.isSendingCommand)
-                      const Center(
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(vertical: 8.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SizedBox(
-                                width: 16,
-                                height: 16,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                  valueColor: AlwaysStoppedAnimation<Color>(primaryGreen),
-                                ),
-                              ),
-                              SizedBox(width: 12),
-                              Text(
-                                'Sending command via SMS/Call...',
-                                style: TextStyle(color: primaryGreen, fontSize: 13),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-
-                    // Check Status & Call Device Buttons
-                    Row(
-                      children: [
-                        Expanded(
-                          child: OutlinedButton.icon(
-                            onPressed: deviceState.isSendingCommand
-                                ? null
-                                : () => controlNotifier.checkStatus(),
-                            icon: const Icon(Icons.phonelink_setup, size: 18),
-                            label: const Text('Check Status'),
-                            style: OutlinedButton.styleFrom(
-                              foregroundColor: textDark,
-                              side: const BorderSide(color: Colors.grey),
-                              padding: const EdgeInsets.symmetric(vertical: 14),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(16),
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: OutlinedButton.icon(
-                            onPressed: deviceState.isSendingCommand
-                                ? null
-                                : () => controlNotifier.callDevice(),
-                            icon: const Icon(Icons.phone_in_talk_outlined, size: 18),
-                            label: const Text('Call Device'),
-                            style: OutlinedButton.styleFrom(
-                              foregroundColor: textDark,
-                              side: const BorderSide(color: Colors.grey),
-                              padding: const EdgeInsets.symmetric(vertical: 14),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(16),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 24),
-
-                    // Auto Mode Section
-                    Container(
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(24),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.03),
-                            blurRadius: 12,
-                            offset: const Offset(0, 6),
-                          ),
-                        ],
-                      ),
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.all(10),
-                                decoration: const BoxDecoration(
-                                  gradient: LinearGradient(
-                                    colors: [Color(0xFF5B86E5), Color(0xFF36D1DC)],
-                                    begin: Alignment.topLeft,
-                                    end: Alignment.bottomRight,
-                                  ),
-                                  shape: BoxShape.circle,
-                                ),
-                                child: const Icon(
-                                  Icons.settings,
-                                  color: Colors.white,
-                                  size: 24,
-                                ),
-                              ),
-                              const SizedBox(width: 16),
-                              const Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Auto Mode',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        color: textDark,
-                                      ),
-                                    ),
-                                    SizedBox(height: 2),
-                                    Text(
-                                      'Smart control active',
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        color: textGrey,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Switch(
-                                value: deviceState.isAutoModeOn,
-                                activeThumbColor: Colors.white,
-                                activeTrackColor: blueAccent,
-                                inactiveThumbColor: Colors.white,
-                                inactiveTrackColor: Colors.grey[300],
-                                onChanged: (value) {
-                                  controlNotifier.toggleAutoMode(value);
-                                },
-                              ),
-                            ],
-                          ),
-                          if (deviceState.isAutoModeOn) ...[
-                            const SizedBox(height: 16),
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 12,
-                                vertical: 12,
-                              ),
-                              decoration: BoxDecoration(
-                                color: blueBg,
-                                borderRadius: BorderRadius.circular(12),
-                                border: Border.all(
-                                  color: blueAccent.withOpacity(0.3),
-                                ),
-                              ),
-                              child: Row(
-                                children: [
+                                if (deviceState.isAutoModeOn) ...[
+                                  const SizedBox(height: 16),
                                   Container(
-                                    width: 8,
-                                    height: 8,
-                                    decoration: const BoxDecoration(
-                                      color: blueAccent,
-                                      shape: BoxShape.circle,
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 12,
+                                      vertical: 12,
                                     ),
-                                  ),
-                                  const SizedBox(width: 8),
-                                  const Expanded(
-                                    child: Text(
-                                      'Automation is ON - Device will control motor automatically',
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w600,
-                                        color: blueAccent,
+                                    decoration: BoxDecoration(
+                                      color: blueBg,
+                                      borderRadius: BorderRadius.circular(12),
+                                      border: Border.all(
+                                        color: blueAccent.withOpacity(0.3),
                                       ),
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          width: 8,
+                                          height: 8,
+                                          decoration: const BoxDecoration(
+                                            color: blueAccent,
+                                            shape: BoxShape.circle,
+                                          ),
+                                        ),
+                                        const SizedBox(width: 8),
+                                        const Expanded(
+                                          child: Text(
+                                            'Automation is ON - Device will control motor automatically',
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w600,
+                                              color: blueAccent,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ],
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          // Debug Switch to simulate command failure for testing
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 8,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.amber.withAlpha(25),
+                              borderRadius: BorderRadius.circular(16),
+                              border: Border.all(
+                                color: Colors.amber.withAlpha(76),
                               ),
                             ),
-                          ],
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    // Debug Switch to simulate command failure for testing
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                      decoration: BoxDecoration(
-                        color: Colors.amber.withAlpha(25),
-                        borderRadius: BorderRadius.circular(16),
-                        border: Border.all(color: Colors.amber.withAlpha(76)),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Row(
-                            children: [
-                              Icon(Icons.bug_report, color: Colors.amber),
-                              SizedBox(width: 8),
-                              Text(
-                                'Simulate Command Failure (Testing)',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 12,
-                                  color: textDark,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Row(
+                                  children: [
+                                    Icon(Icons.bug_report, color: Colors.amber),
+                                    SizedBox(width: 8),
+                                    Text(
+                                      'Simulate Command Failure (Testing)',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 12,
+                                        color: textDark,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ),
-                            ],
-                          ),
-                          Switch(
-                            value: deviceState.simulateFailure,
-                            activeThumbColor: Colors.amber,
-                            onChanged: (value) {
-                              controlNotifier.toggleSimulateFailure(value);
-                            },
+                                Switch(
+                                  value: deviceState.simulateFailure,
+                                  activeThumbColor: Colors.amber,
+                                  onChanged: (value) {
+                                    controlNotifier.toggleSimulateFailure(
+                                      value,
+                                    );
+                                  },
+                                ),
+                              ],
+                            ),
                           ),
                         ],
-                      ),
-                    ),
-                  ],
-                ),
+                      )
+                    : const AutomationView(),
               ),
             ),
           ],
@@ -670,8 +755,14 @@ class DeviceDashboardScreen extends ConsumerWidget {
         type: BottomNavigationBarType.fixed,
         selectedItemColor: primaryGreen,
         unselectedItemColor: textGrey,
-        selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
-        unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.w500, fontSize: 11),
+        selectedLabelStyle: const TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 11,
+        ),
+        unselectedLabelStyle: const TextStyle(
+          fontWeight: FontWeight.w500,
+          fontSize: 11,
+        ),
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.grid_view_rounded),
@@ -712,9 +803,7 @@ class _SendingCommandDialog extends ConsumerWidget {
 
     return Dialog(
       backgroundColor: Colors.white,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(28),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
         child: Column(
@@ -754,11 +843,7 @@ class _SendingCommandDialog extends ConsumerWidget {
             const Text(
               'Sending SMS command to your\nmotor device.',
               textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 14,
-                color: textGrey,
-                height: 1.4,
-              ),
+              style: TextStyle(fontSize: 14, color: textGrey, height: 1.4),
             ),
             const SizedBox(height: 28),
             // Cancel Button
@@ -778,10 +863,7 @@ class _SendingCommandDialog extends ConsumerWidget {
                 ),
                 child: const Text(
                   'Cancel',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 15,
-                  ),
+                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
                 ),
               ),
             ),
@@ -805,9 +887,7 @@ class _CommandSuccessDialog extends ConsumerWidget {
 
     return Dialog(
       backgroundColor: Colors.white,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(28),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
         child: Column(
@@ -822,11 +902,7 @@ class _CommandSuccessDialog extends ConsumerWidget {
                 shape: BoxShape.circle,
               ),
               child: const Center(
-                child: Icon(
-                  Icons.check_circle,
-                  color: successGreen,
-                  size: 36,
-                ),
+                child: Icon(Icons.check_circle, color: successGreen, size: 36),
               ),
             ),
             const SizedBox(height: 24),
@@ -858,9 +934,7 @@ class _CommandSuccessDialog extends ConsumerWidget {
                       color: textDark,
                     ),
                   ),
-                  const TextSpan(
-                    text: 'command has been sent to the device.',
-                  ),
+                  const TextSpan(text: 'command has been sent to the device.'),
                 ],
               ),
             ),
@@ -868,11 +942,7 @@ class _CommandSuccessDialog extends ConsumerWidget {
             const Text(
               'You will receive confirmation via\nSMS on your phone.',
               textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 14,
-                color: textGrey,
-                height: 1.4,
-              ),
+              style: TextStyle(fontSize: 14, color: textGrey, height: 1.4),
             ),
             const SizedBox(height: 28),
             // OK Button
@@ -880,7 +950,9 @@ class _CommandSuccessDialog extends ConsumerWidget {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  ref.read(deviceControlProvider.notifier).dismissSuccessDialog();
+                  ref
+                      .read(deviceControlProvider.notifier)
+                      .dismissSuccessDialog();
                   Navigator.of(context).pop();
                 },
                 style: ElevatedButton.styleFrom(
@@ -893,10 +965,7 @@ class _CommandSuccessDialog extends ConsumerWidget {
                 ),
                 child: const Text(
                   'OK',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 15,
-                  ),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
                 ),
               ),
             ),
@@ -921,9 +990,7 @@ class _CommandFailedDialog extends ConsumerWidget {
 
     return Dialog(
       backgroundColor: Colors.white,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(28),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
         child: Column(
@@ -960,11 +1027,7 @@ class _CommandFailedDialog extends ConsumerWidget {
             const Text(
               'Unable to send SMS command.\nPlease check your network or\nSIM settings.',
               textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 14,
-                color: textGrey,
-                height: 1.4,
-              ),
+              style: TextStyle(fontSize: 14, color: textGrey, height: 1.4),
             ),
             const SizedBox(height: 28),
             // Try Again Button
@@ -984,10 +1047,7 @@ class _CommandFailedDialog extends ConsumerWidget {
                 ),
                 child: const Text(
                   'Try Again',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 15,
-                  ),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
                 ),
               ),
             ),
@@ -997,7 +1057,9 @@ class _CommandFailedDialog extends ConsumerWidget {
               width: double.infinity,
               child: OutlinedButton(
                 onPressed: () {
-                  ref.read(deviceControlProvider.notifier).dismissFailureDialog();
+                  ref
+                      .read(deviceControlProvider.notifier)
+                      .dismissFailureDialog();
                   Navigator.of(context).pop();
                 },
                 style: OutlinedButton.styleFrom(
@@ -1010,10 +1072,7 @@ class _CommandFailedDialog extends ConsumerWidget {
                 ),
                 child: const Text(
                   'Cancel',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 15,
-                  ),
+                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
                 ),
               ),
             ),
