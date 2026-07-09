@@ -11,6 +11,14 @@ class AutomationState {
   final int runOnceHours;
   final int runOnceMinutes;
 
+  // Daily Schedule Configs
+  final bool dailyScheduleCreated;
+  final String scheduleName;
+  final int scheduleHours;
+  final int scheduleMinutes;
+  final int scheduleDays;
+  final bool dryRunProtectionEnabled;
+
   // Command status flags for simulated SMS updates
   final bool isSendingCommand;
   final bool showSuccessDialog;
@@ -22,6 +30,11 @@ class AutomationState {
   final bool runOnceShowSuccess;
   final bool runOnceShowFailure;
 
+  // Daily Schedule specific dialog status flags
+  final bool dailySendingCommand;
+  final bool dailyShowSuccess;
+  final bool dailyShowFailure;
+
   AutomationState({
     required this.autoStartEnabled,
     required this.autoStartDelay,
@@ -32,6 +45,12 @@ class AutomationState {
     required this.cyclicModeStatus,
     this.runOnceHours = 4,
     this.runOnceMinutes = 30,
+    this.dailyScheduleCreated = false,
+    this.scheduleName = "Morning Irrigation",
+    this.scheduleHours = 4,
+    this.scheduleMinutes = 30,
+    this.scheduleDays = 5,
+    this.dryRunProtectionEnabled = true,
     this.isSendingCommand = false,
     this.showSuccessDialog = false,
     this.showFailureDialog = false,
@@ -39,6 +58,9 @@ class AutomationState {
     this.runOnceSendingCommand = false,
     this.runOnceShowSuccess = false,
     this.runOnceShowFailure = false,
+    this.dailySendingCommand = false,
+    this.dailyShowSuccess = false,
+    this.dailyShowFailure = false,
   });
 
   AutomationState copyWith({
@@ -51,6 +73,12 @@ class AutomationState {
     String? cyclicModeStatus,
     int? runOnceHours,
     int? runOnceMinutes,
+    bool? dailyScheduleCreated,
+    String? scheduleName,
+    int? scheduleHours,
+    int? scheduleMinutes,
+    int? scheduleDays,
+    bool? dryRunProtectionEnabled,
     bool? isSendingCommand,
     bool? showSuccessDialog,
     bool? showFailureDialog,
@@ -58,6 +86,9 @@ class AutomationState {
     bool? runOnceSendingCommand,
     bool? runOnceShowSuccess,
     bool? runOnceShowFailure,
+    bool? dailySendingCommand,
+    bool? dailyShowSuccess,
+    bool? dailyShowFailure,
   }) {
     return AutomationState(
       autoStartEnabled: autoStartEnabled ?? this.autoStartEnabled,
@@ -69,6 +100,12 @@ class AutomationState {
       cyclicModeStatus: cyclicModeStatus ?? this.cyclicModeStatus,
       runOnceHours: runOnceHours ?? this.runOnceHours,
       runOnceMinutes: runOnceMinutes ?? this.runOnceMinutes,
+      dailyScheduleCreated: dailyScheduleCreated ?? this.dailyScheduleCreated,
+      scheduleName: scheduleName ?? this.scheduleName,
+      scheduleHours: scheduleHours ?? this.scheduleHours,
+      scheduleMinutes: scheduleMinutes ?? this.scheduleMinutes,
+      scheduleDays: scheduleDays ?? this.scheduleDays,
+      dryRunProtectionEnabled: dryRunProtectionEnabled ?? this.dryRunProtectionEnabled,
       isSendingCommand: isSendingCommand ?? this.isSendingCommand,
       showSuccessDialog: showSuccessDialog ?? this.showSuccessDialog,
       showFailureDialog: showFailureDialog ?? this.showFailureDialog,
@@ -76,6 +113,9 @@ class AutomationState {
       runOnceSendingCommand: runOnceSendingCommand ?? this.runOnceSendingCommand,
       runOnceShowSuccess: runOnceShowSuccess ?? this.runOnceShowSuccess,
       runOnceShowFailure: runOnceShowFailure ?? this.runOnceShowFailure,
+      dailySendingCommand: dailySendingCommand ?? this.dailySendingCommand,
+      dailyShowSuccess: dailyShowSuccess ?? this.dailyShowSuccess,
+      dailyShowFailure: dailyShowFailure ?? this.dailyShowFailure,
     );
   }
 }

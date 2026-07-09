@@ -16,6 +16,7 @@ class AutomationNotifier extends StateNotifier<AutomationState> {
 
   Timer? _simulatedSmsTimer;
   Timer? _runOnceSmsTimer;
+  Timer? _dailySmsTimer;
 
   void toggleAutoStart(bool value) {
     state = state.copyWith(autoStartEnabled: value);
@@ -91,6 +92,66 @@ class AutomationNotifier extends StateNotifier<AutomationState> {
     }
   }
 
+  // Daily Schedule configurations
+  void updateScheduleName(String name) {
+    state = state.copyWith(scheduleName: name);
+  }
+
+  void incrementScheduleHours() {
+    state = state.copyWith(scheduleHours: state.scheduleHours + 1);
+  }
+
+  void decrementScheduleHours() {
+    if (state.scheduleHours > 0) {
+      state = state.copyWith(scheduleHours: state.scheduleHours - 1);
+    }
+  }
+
+  void incrementScheduleMinutes() {
+    if (state.scheduleMinutes < 55) {
+      state = state.copyWith(scheduleMinutes: state.scheduleMinutes + 5);
+    } else {
+      state = state.copyWith(
+        scheduleHours: state.scheduleHours + 1,
+        scheduleMinutes: 0,
+      );
+    }
+  }
+
+  void decrementScheduleMinutes() {
+    if (state.scheduleMinutes >= 5) {
+      state = state.copyWith(scheduleMinutes: state.scheduleMinutes - 5);
+    } else if (state.scheduleHours > 0) {
+      state = state.copyWith(
+        scheduleHours: state.scheduleHours - 1,
+        scheduleMinutes: 55,
+      );
+    }
+  }
+
+  void incrementScheduleDays() {
+    if (state.scheduleDays < 30) {
+      state = state.copyWith(scheduleDays: state.scheduleDays + 1);
+    }
+  }
+
+  void decrementScheduleDays() {
+    if (state.scheduleDays > 1) {
+      state = state.copyWith(scheduleDays: state.scheduleDays - 1);
+    }
+  }
+
+  void toggleDryRunProtection(bool value) {
+    state = state.copyWith(dryRunProtectionEnabled: value);
+  }
+
+  void deleteDailySchedule() {
+    state = state.copyWith(
+      dailyScheduleCreated: false,
+      dailyScheduleEnabled: false,
+    );
+  }
+
   // Simulated SMS updates for Auto Start config
   Future<void> sendAutoStartCommand() async {
     _simulatedSmsTimer?.cancel();
@@ -155,7 +216,7 @@ class AutomationNotifier extends StateNotifier<AutomationState> {
         state = state.copyWith(
           runOnceSendingCommand: false,
           runOnceShowSuccess: true,
-          runOnceTimerEnabled: true, // Automatically enable run once timer state
+          runOnceTimerEnabled: true,
         );
       }
     });
@@ -182,10 +243,59 @@ class AutomationNotifier extends StateNotifier<AutomationState> {
     state = state.copyWith(runOnceShowFailure: false);
   }
 
+  // Simulated SMS updates for Daily Schedule config
+  Future<void> sendDailyScheduleCommand() async {
+    _dailySmsTimer?.cancel();
+    state = state.copyWith(
+      dailySendingCommand: true,
+      dailyShowSuccess: false,
+      dailyShowFailure: false,
+    );
+
+    _dailySmsTimer = Timer(const Duration(seconds: 3), () {
+      if (state.simulateFailure) {
+        state = state.copyWith(
+          dailySendingCommand: false,
+          dailyShowFailure: true,
+        );
+      } else {
+        state = state.copyWith(
+          dailySendingCommand: false,
+          dailyShowSuccess: true,
+          dailyScheduleCreated: true,
+          dailyScheduleEnabled: true,
+          dailyScheduleStatus: "Active – Running for ${state.scheduleDays} days",
+        );
+      }
+    });
+  }
+
+  void cancelDailyScheduleCommand() {
+    _dailySmsTimer?.cancel();
+    state = state.copyWith(
+      dailySendingCommand: false,
+      dailyShowSuccess: false,
+      dailyShowFailure: false,
+    );
+  }
+
+  void retryDailyScheduleCommand() {
+    sendDailyScheduleCommand();
+  }
+
+  void dismissDailySuccessDialog() {
+    state = state.copyWith(dailyShowSuccess: false);
+  }
+
+  void dismissDailyFailureDialog() {
+    state = state.copyWith(dailyShowFailure: false);
+  }
+
   @override
   void dispose() {
     _simulatedSmsTimer?.cancel();
     _runOnceSmsTimer?.cancel();
+    _dailySmsTimer?.cancel();
     super.dispose();
   }
 }
