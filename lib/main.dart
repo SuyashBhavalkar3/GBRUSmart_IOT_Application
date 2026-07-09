@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'home_dashboard/screens/home_dashboard_screen.dart';
+import 'control_device/screens/device_dashboard_screen.dart';
 
 void main() {
   runApp(
-    // Wrap the entire app in a ProviderScope to enable Riverpod state management.
     const ProviderScope(
       child: MyApp(),
     ),
@@ -17,16 +16,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Motor Mitra Smart',
+      title: 'GBRU Mobile Auto',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF1FAA59),
-          primary: const Color(0xFF1FAA59),
+          seedColor: const Color(0xFF00A859),
         ),
+        useMaterial3: true,
       ),
-      home: const HomeDashboardScreen(),
+      home: const DeviceDashboardScreen(),
     );
   }
 }
