@@ -66,6 +66,7 @@ class DeviceDashboardScreen extends ConsumerWidget {
       backgroundColor: bgMint,
       appBar: AppBar(
         backgroundColor: Colors.white,
+        scrolledUnderElevation: 0,
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: textDark),
