@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/automation_provider.dart';
 import 'auto_start_config_screen.dart';
 import 'run_once_config_screen.dart';
+import 'daily_schedule_config_screen.dart';
 
 class AutomationView extends ConsumerWidget {
   const AutomationView({super.key});
@@ -100,7 +101,13 @@ class AutomationView extends ConsumerWidget {
           isEnabled: automationState.dailyScheduleEnabled,
           onToggle: notifier.toggleDailySchedule,
           actionButtonLabel: 'Configure',
-          onActionPressed: () {},
+          onActionPressed: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const DailyScheduleConfigScreen(),
+              ),
+            );
+          },
           extraWidget: Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
             decoration: BoxDecoration(
