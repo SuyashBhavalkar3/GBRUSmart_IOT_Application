@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../settings/screens/voltage_protection_screen.dart';
+import '../settings/screens/current_protection_screen.dart';
 
 const Color primaryGreen = Color(0xFF00A859);
 const Color bgMint = Color(0xFFF0F9F4);
@@ -278,6 +279,13 @@ class SettingsView extends ConsumerWidget {
           iconBgColor: const Color(0xFFFEE2E2),
           title: 'Current Protection',
           description: 'Set motor current safety limits.',
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const CurrentProtectionScreen(),
+              ),
+            );
+          },
         ),
         const SizedBox(height: 16),
 
