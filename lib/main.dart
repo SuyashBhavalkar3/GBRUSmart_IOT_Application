@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'authentication/screens/splash_screen.dart';
+import 'authentication/screens/login_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -30,7 +32,18 @@ class MyApp extends StatelessWidget {
         // tested with just a hot reload.
         colorScheme: .fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: Builder(
+        builder: (context) {
+          return SplashScreen(
+            onGetStarted: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const LoginScreen()),
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }
