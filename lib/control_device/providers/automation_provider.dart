@@ -17,6 +17,7 @@ class AutomationNotifier extends StateNotifier<AutomationState> {
   Timer? _simulatedSmsTimer;
   Timer? _runOnceSmsTimer;
   Timer? _dailySmsTimer;
+  Timer? _cyclicSmsTimer;
 
   void toggleAutoStart(bool value) {
     state = state.copyWith(autoStartEnabled: value);
@@ -150,6 +151,71 @@ class AutomationNotifier extends StateNotifier<AutomationState> {
       dailyScheduleCreated: false,
       dailyScheduleEnabled: false,
     );
+  }
+
+  // Cyclic Mode configurations
+  void incrementCyclicRunHours() {
+    state = state.copyWith(cyclicRunHours: state.cyclicRunHours + 1);
+  }
+
+  void decrementCyclicRunHours() {
+    if (state.cyclicRunHours > 0) {
+      state = state.copyWith(cyclicRunHours: state.cyclicRunHours - 1);
+    }
+  }
+
+  void incrementCyclicRunMinutes() {
+    if (state.cyclicRunMinutes < 55) {
+      state = state.copyWith(cyclicRunMinutes: state.cyclicRunMinutes + 5);
+    } else {
+      state = state.copyWith(
+        cyclicRunHours: state.cyclicRunHours + 1,
+        cyclicRunMinutes: 0,
+      );
+    }
+  }
+
+  void decrementCyclicRunMinutes() {
+    if (state.cyclicRunMinutes >= 5) {
+      state = state.copyWith(cyclicRunMinutes: state.cyclicRunMinutes - 5);
+    } else if (state.cyclicRunHours > 0) {
+      state = state.copyWith(
+        cyclicRunHours: state.cyclicRunHours - 1,
+        cyclicRunMinutes: 55,
+      );
+    }
+  }
+
+  void incrementCyclicPauseHours() {
+    state = state.copyWith(cyclicPauseHours: state.cyclicPauseHours + 1);
+  }
+
+  void decrementCyclicPauseHours() {
+    if (state.cyclicPauseHours > 0) {
+      state = state.copyWith(cyclicPauseHours: state.cyclicPauseHours - 1);
+    }
+  }
+
+  void incrementCyclicPauseMinutes() {
+    if (state.cyclicPauseMinutes < 55) {
+      state = state.copyWith(cyclicPauseMinutes: state.cyclicPauseMinutes + 5);
+    } else {
+      state = state.copyWith(
+        cyclicPauseHours: state.cyclicPauseHours + 1,
+        cyclicPauseMinutes: 0,
+      );
+    }
+  }
+
+  void decrementCyclicPauseMinutes() {
+    if (state.cyclicPauseMinutes >= 5) {
+      state = state.copyWith(cyclicPauseMinutes: state.cyclicPauseMinutes - 5);
+    } else if (state.cyclicPauseHours > 0) {
+      state = state.copyWith(
+        cyclicPauseHours: state.cyclicPauseHours - 1,
+        cyclicPauseMinutes: 55,
+      );
+    }
   }
 
   // Simulated SMS updates for Auto Start config
@@ -291,11 +357,59 @@ class AutomationNotifier extends StateNotifier<AutomationState> {
     state = state.copyWith(dailyShowFailure: false);
   }
 
+  // Simulated SMS updates for Cyclic Mode config
+  Future<void> sendCyclicCommand() async {
+    _cyclicSmsTimer?.cancel();
+    state = state.copyWith(
+      cyclicSendingCommand: true,
+      cyclicShowSuccess: false,
+      cyclicShowFailure: false,
+    );
+
+    _cyclicSmsTimer = Timer(const Duration(seconds: 3), () {
+      if (state.simulateFailure) {
+        state = state.copyWith(
+          cyclicSendingCommand: false,
+          cyclicShowFailure: true,
+        );
+      } else {
+        state = state.copyWith(
+          cyclicSendingCommand: false,
+          cyclicShowSuccess: true,
+          cyclicModeEnabled: true,
+          cyclicModeStatus: "Active",
+        );
+      }
+    });
+  }
+
+  void cancelCyclicCommand() {
+    _cyclicSmsTimer?.cancel();
+    state = state.copyWith(
+      cyclicSendingCommand: false,
+      cyclicShowSuccess: false,
+      cyclicShowFailure: false,
+    );
+  }
+
+  void retryCyclicCommand() {
+    sendCyclicCommand();
+  }
+
+  void dismissCyclicSuccessDialog() {
+    state = state.copyWith(cyclicShowSuccess: false);
+  }
+
+  void dismissCyclicFailureDialog() {
+    state = state.copyWith(cyclicShowFailure: false);
+  }
+
   @override
   void dispose() {
     _simulatedSmsTimer?.cancel();
     _runOnceSmsTimer?.cancel();
     _dailySmsTimer?.cancel();
+    _cyclicSmsTimer?.cancel();
     super.dispose();
   }
 }

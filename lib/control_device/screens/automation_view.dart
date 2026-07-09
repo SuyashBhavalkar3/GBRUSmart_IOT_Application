@@ -4,6 +4,7 @@ import '../providers/automation_provider.dart';
 import 'auto_start_config_screen.dart';
 import 'run_once_config_screen.dart';
 import 'daily_schedule_config_screen.dart';
+import 'cyclic_mode_config_screen.dart';
 
 class AutomationView extends ConsumerWidget {
   const AutomationView({super.key});
@@ -161,7 +162,13 @@ class AutomationView extends ConsumerWidget {
           isEnabled: automationState.cyclicModeEnabled,
           onToggle: notifier.toggleCyclicMode,
           actionButtonLabel: 'Configure',
-          onActionPressed: () {},
+          onActionPressed: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const CyclicModeConfigScreen(),
+              ),
+            );
+          },
           extraWidget: Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
             decoration: BoxDecoration(

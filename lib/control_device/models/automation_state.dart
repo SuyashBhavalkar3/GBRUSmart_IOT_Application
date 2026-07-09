@@ -19,6 +19,12 @@ class AutomationState {
   final int scheduleDays;
   final bool dryRunProtectionEnabled;
 
+  // Cyclic Mode Configs
+  final int cyclicRunHours;
+  final int cyclicRunMinutes;
+  final int cyclicPauseHours;
+  final int cyclicPauseMinutes;
+
   // Command status flags for simulated SMS updates
   final bool isSendingCommand;
   final bool showSuccessDialog;
@@ -34,6 +40,11 @@ class AutomationState {
   final bool dailySendingCommand;
   final bool dailyShowSuccess;
   final bool dailyShowFailure;
+
+  // Cyclic Mode specific dialog status flags
+  final bool cyclicSendingCommand;
+  final bool cyclicShowSuccess;
+  final bool cyclicShowFailure;
 
   AutomationState({
     required this.autoStartEnabled,
@@ -51,6 +62,10 @@ class AutomationState {
     this.scheduleMinutes = 30,
     this.scheduleDays = 5,
     this.dryRunProtectionEnabled = true,
+    this.cyclicRunHours = 2,
+    this.cyclicRunMinutes = 0,
+    this.cyclicPauseHours = 0,
+    this.cyclicPauseMinutes = 30,
     this.isSendingCommand = false,
     this.showSuccessDialog = false,
     this.showFailureDialog = false,
@@ -61,6 +76,9 @@ class AutomationState {
     this.dailySendingCommand = false,
     this.dailyShowSuccess = false,
     this.dailyShowFailure = false,
+    this.cyclicSendingCommand = false,
+    this.cyclicShowSuccess = false,
+    this.cyclicShowFailure = false,
   });
 
   AutomationState copyWith({
@@ -79,6 +97,10 @@ class AutomationState {
     int? scheduleMinutes,
     int? scheduleDays,
     bool? dryRunProtectionEnabled,
+    int? cyclicRunHours,
+    int? cyclicRunMinutes,
+    int? cyclicPauseHours,
+    int? cyclicPauseMinutes,
     bool? isSendingCommand,
     bool? showSuccessDialog,
     bool? showFailureDialog,
@@ -89,6 +111,9 @@ class AutomationState {
     bool? dailySendingCommand,
     bool? dailyShowSuccess,
     bool? dailyShowFailure,
+    bool? cyclicSendingCommand,
+    bool? cyclicShowSuccess,
+    bool? cyclicShowFailure,
   }) {
     return AutomationState(
       autoStartEnabled: autoStartEnabled ?? this.autoStartEnabled,
@@ -106,6 +131,10 @@ class AutomationState {
       scheduleMinutes: scheduleMinutes ?? this.scheduleMinutes,
       scheduleDays: scheduleDays ?? this.scheduleDays,
       dryRunProtectionEnabled: dryRunProtectionEnabled ?? this.dryRunProtectionEnabled,
+      cyclicRunHours: cyclicRunHours ?? this.cyclicRunHours,
+      cyclicRunMinutes: cyclicRunMinutes ?? this.cyclicRunMinutes,
+      cyclicPauseHours: cyclicPauseHours ?? this.cyclicPauseHours,
+      cyclicPauseMinutes: cyclicPauseMinutes ?? this.cyclicPauseMinutes,
       isSendingCommand: isSendingCommand ?? this.isSendingCommand,
       showSuccessDialog: showSuccessDialog ?? this.showSuccessDialog,
       showFailureDialog: showFailureDialog ?? this.showFailureDialog,
@@ -116,6 +145,9 @@ class AutomationState {
       dailySendingCommand: dailySendingCommand ?? this.dailySendingCommand,
       dailyShowSuccess: dailyShowSuccess ?? this.dailyShowSuccess,
       dailyShowFailure: dailyShowFailure ?? this.dailyShowFailure,
+      cyclicSendingCommand: cyclicSendingCommand ?? this.cyclicSendingCommand,
+      cyclicShowSuccess: cyclicShowSuccess ?? this.cyclicShowSuccess,
+      cyclicShowFailure: cyclicShowFailure ?? this.cyclicShowFailure,
     );
   }
 }
