@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/automation_provider.dart';
+import 'auto_start_config_screen.dart';
 
 class AutomationView extends ConsumerWidget {
   const AutomationView({super.key});
@@ -36,7 +37,13 @@ class AutomationView extends ConsumerWidget {
           isEnabled: automationState.autoStartEnabled,
           onToggle: notifier.toggleAutoStart,
           actionButtonLabel: 'Configure',
-          onActionPressed: () {},
+          onActionPressed: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const AutoStartConfigScreen(),
+              ),
+            );
+          },
           extraWidget: Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
             decoration: BoxDecoration(
