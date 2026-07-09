@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../settings/star_delta_timer/star_delta_timer_screen.dart';
+import '../settings/ct_sensor/ct_sensor_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'authorized_numbers.dart';
 import '../settings/screens/missed-call-mode.dart';
@@ -285,6 +287,17 @@ class SettingsView extends ConsumerWidget {
           iconBgColor: const Color(0xFFFFF2EB),
           title: 'Star-Delta Timer',
           description: 'Set delay between star and delta mode.',
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => StarDeltaTimerScreen(
+                  onBackPressed: () => Navigator.pop(context),
+                  onSaveSettings: () => Navigator.pop(context),
+                ),
+              ),
+            );
+          },
         ),
         _buildSettingsMenuCard(
           icon: Icons.graphic_eq,
@@ -292,6 +305,17 @@ class SettingsView extends ConsumerWidget {
           iconBgColor: blueBg,
           title: 'CT Sensor',
           description: 'Enable or configure current transformer sensor.',
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => CtSensorScreen(
+                  onBackPressed: () => Navigator.pop(context),
+                  onSaveSettings: () => Navigator.pop(context),
+                ),
+              ),
+            );
+          },
         ),
         const SizedBox(height: 16),
 
@@ -504,6 +528,29 @@ class SettingsView extends ConsumerWidget {
     required String description,
     VoidCallback? onTap,
   }) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: borderGrey),
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(20),
+          onTap: onTap,
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Row(
+
+        children: [
+          Container(
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+              color: iconBgColor,
+              shape: BoxShape.circle,
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -555,6 +602,9 @@ class SettingsView extends ConsumerWidget {
           ],
         ),
       ),
+            ),
+          ),
+        ),
     );
   }
 }
