@@ -2,6 +2,12 @@ import 'package:flutter/material.dart';
 import '../settings/star_delta_timer/star_delta_timer_screen.dart';
 import '../settings/ct_sensor/ct_sensor_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'authorized_numbers.dart';
+import '../settings/screens/missed-call-mode.dart';
+import '../settings/screens/start-type.dart';
+import '../settings/screens/voltage_protection_screen.dart';
+import '../settings/screens/current_protection_screen.dart';
+import '../settings/screens/sim_balance_screen.dart';
 
 const Color primaryGreen = Color(0xFF00A859);
 const Color bgMint = Color(0xFFF0F9F4);
@@ -203,43 +209,77 @@ class SettingsView extends ConsumerWidget {
         const SizedBox(height: 12),
 
         // SIM Balance Grid card (takes full width)
-        _buildGridCardFullWidth(
-          icon: Icons.sim_card_outlined,
-          iconColor: primaryGreen,
-          iconBgColor: const Color(0xFFE6F7ED),
-          title: 'SIM Balance',
-          value: '₹24.50',
-          subtitle: 'Last received: ₹24.50',
-          footer: 'Received at: 6:30pm 16/03/2026',
+        GestureDetector(
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => const SimBalanceScreen()),
+            );
+          },
+          child: _buildGridCardFullWidth(
+            icon: Icons.sim_card_outlined,
+            iconColor: primaryGreen,
+            iconBgColor: const Color(0xFFE6F7ED),
+            title: 'SIM Balance',
+            value: '₹24.50',
+            subtitle: 'Last received: ₹24.50',
+            footer: 'Received at: 6:30pm 16/03/2026',
+          ),
         ),
         const SizedBox(height: 24),
 
         // Group 1: DEVICE ACCESS
         _buildCategoryHeader('DEVICE ACCESS'),
-        _buildSettingsMenuCard(
-          icon: Icons.people_outline,
-          iconColor: blueColor,
-          iconBgColor: blueBg,
-          title: 'Authorized Numbers',
-          description: 'Manage phone numbers allowed to control the device.',
+        GestureDetector(
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const AuthorizedNumbersScreen(),
+              ),
+            );
+          },
+          child: _buildSettingsMenuCard(
+            icon: Icons.people_outline,
+            iconColor: blueColor,
+            iconBgColor: blueBg,
+            title: 'Authorized Numbers',
+            description: 'Manage phone numbers allowed to control the device.',
+          ),
         ),
-        _buildSettingsMenuCard(
-          icon: Icons.phone_callback_outlined,
-          iconColor: const Color(0xFF7C3AED),
-          iconBgColor: const Color(0xFFF5F3FF),
-          title: 'Missed Call Mode',
-          description: 'Enable motor control using missed calls.',
+        GestureDetector(
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const MissedCallModeScreen(),
+              ),
+            );
+          },
+          child: _buildSettingsMenuCard(
+            icon: Icons.phone_callback_outlined,
+            iconColor: const Color(0xFF7C3AED),
+            iconBgColor: const Color(0xFFF5F3FF),
+            title: 'Missed Call Mode',
+            description: 'Enable motor control using missed calls.',
+          ),
         ),
         const SizedBox(height: 16),
 
         // Group 2: MOTOR CONFIGURATION
         _buildCategoryHeader('MOTOR CONFIGURATION'),
-        _buildSettingsMenuCard(
-          icon: Icons.settings_outlined,
-          iconColor: primaryGreen,
-          iconBgColor: const Color(0xFFE6F7ED),
-          title: 'Starter Type',
-          description: 'Configure motor starter type (Direct / Star-Delta).',
+        GestureDetector(
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const StarterTypeScreen(),
+              ),
+            );
+          },
+          child: _buildSettingsMenuCard(
+            icon: Icons.settings_outlined,
+            iconColor: primaryGreen,
+            iconBgColor: const Color(0xFFE6F7ED),
+            title: 'Starter Type',
+            description: 'Configure motor starter type (Direct / Star-Delta).',
+          ),
         ),
         _buildSettingsMenuCard(
           icon: Icons.av_timer,
@@ -287,6 +327,13 @@ class SettingsView extends ConsumerWidget {
           iconBgColor: const Color(0xFFFEF3C7),
           title: 'Voltage Protection',
           description: 'Set minimum and maximum voltage limits.',
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const VoltageProtectionScreen(),
+              ),
+            );
+          },
         ),
         _buildSettingsMenuCard(
           icon: Icons.error_outline_rounded,
@@ -294,6 +341,13 @@ class SettingsView extends ConsumerWidget {
           iconBgColor: const Color(0xFFFEE2E2),
           title: 'Current Protection',
           description: 'Set motor current safety limits.',
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const CurrentProtectionScreen(),
+              ),
+            );
+          },
         ),
         const SizedBox(height: 16),
 
@@ -306,6 +360,11 @@ class SettingsView extends ConsumerWidget {
           title: 'SIM Balance',
           description:
               'Check remaining balance of the SIM card inside the device.',
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => const SimBalanceScreen()),
+            );
+          },
         ),
       ],
     );
@@ -492,37 +551,56 @@ class SettingsView extends ConsumerWidget {
             decoration: BoxDecoration(
               color: iconBgColor,
               shape: BoxShape.circle,
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 12),
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: borderGrey),
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: 40,
+              height: 40,
+              decoration: BoxDecoration(
+                color: iconBgColor,
+                shape: BoxShape.circle,
+              ),
+              child: Icon(icon, color: iconColor, size: 20),
             ),
-            child: Icon(icon, color: iconColor, size: 20),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                    color: textDark,
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                      color: textDark,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 2),
-                Text(
-                  description,
-                  style: const TextStyle(
-                    fontSize: 12,
-                    color: textGrey,
-                    height: 1.3,
+                  const SizedBox(height: 2),
+                  Text(
+                    description,
+                    style: const TextStyle(
+                      fontSize: 12,
+                      color: textGrey,
+                      height: 1.3,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          const SizedBox(width: 8),
-          const Icon(Icons.chevron_right, color: Colors.grey),
-        ],
+            const SizedBox(width: 8),
+            const Icon(Icons.chevron_right, color: Colors.grey),
+          ],
+        ),
       ),
             ),
           ),
