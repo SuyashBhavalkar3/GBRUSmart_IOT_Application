@@ -153,7 +153,11 @@ class _KnowledgeHubScreenState extends State<KnowledgeHubScreen> {
         actions: [
           IconButton(
             icon: const Icon(Icons.search, color: AppColors.textDark),
-            onPressed: () {},
+            onPressed: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Search catalog is coming soon!')),
+              );
+            },
           ),
         ],
         backgroundColor: Colors.white,
@@ -474,51 +478,34 @@ class _KnowledgeHubScreenState extends State<KnowledgeHubScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      doc['title'],
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 13.0,
-                        color: AppColors.textDark,
-                      ),
-                    ),
-                    const SizedBox(height: 2.0),
-                    Text(
-                      doc['subtitle'],
-                      style: const TextStyle(
-                        color: AppColors.textGrey,
-                        fontSize: 10.0,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: 4.0),
                     Row(
                       children: [
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 1.0),
-                          decoration: BoxDecoration(
-                            border: Border.all(color: docColor.withOpacity(0.5)),
-                            borderRadius: BorderRadius.circular(4.0),
-                          ),
-                          child: Text(
-                            doc['badge'],
-                            style: TextStyle(
-                              color: docColor,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 8.0,
-                            ),
+                        Text(
+                          title,
+                          style: const TextStyle(
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.textDark,
                           ),
                         ),
                         const SizedBox(width: 6.0),
-                        Text(
-                          doc['size'],
-                          style: const TextStyle(
-                            color: AppColors.textGrey,
-                            fontSize: 10.0,
-                          ),
+                        const Icon(
+                          Icons.chevron_right,
+                          color: AppColors.textGrey,
+                          size: 16.0,
                         ),
                       ],
+                    ),
+                    const SizedBox(height: 2.0),
+                    Text(
+                      subtitle,
+                      style: TextStyle(
+                        fontSize: 12.0,
+                        color: AppColors.textGrey,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ],
                 ),
