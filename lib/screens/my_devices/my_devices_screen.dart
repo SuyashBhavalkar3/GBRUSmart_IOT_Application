@@ -7,6 +7,7 @@ import '../../home_dashboard/widgets/mobile_auto/device_card.dart';
 import '../../home_dashboard/widgets/mobile_auto/add_device_empty_state.dart';
 import '../../home_dashboard/widgets/mobile_auto/transfer_ownership_dialog.dart';
 import '../../home_dashboard/screens/mobile_auto/select_device_to_activate_screen.dart';
+import '../../home_dashboard/screens/mobile_auto/approve_ownership_transfer_screen.dart';
 import '../../home_dashboard/screens/home_dashboard_screen.dart';
 import '../../home_dashboard/Knowledge_hub/knowledge_hub_screen.dart';
 import '../../home_dashboard/My_Profile/profile_screen.dart';
@@ -31,16 +32,12 @@ class _MyDevicesScreenState extends ConsumerState<MyDevicesScreen> {
         deviceName: device.deviceName,
         currentOwnerLabel: 'another owner',
         onConfirm: () {
-          ref
-              .read(mobileAutoProvider.notifier)
-              .confirmTransferOwnership(device.imeiNumber);
-          Navigator.of(context).pop();
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                'Ownership of ${device.deviceName} transferred successfully!',
+          Navigator.of(context).pop(); // Dismiss Dialog
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => ApproveOwnershipTransferScreen(
+                device: device,
               ),
-              backgroundColor: AppColors.primaryGreen,
             ),
           );
         },
