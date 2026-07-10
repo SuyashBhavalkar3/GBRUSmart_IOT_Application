@@ -6,11 +6,13 @@ import '../../app_colors.dart';
 class OtpInputBoxes extends StatefulWidget {
   final ValueChanged<String> onChanged;
   final ValueChanged<String>? onCompleted;
+  final Color? fillColor;
 
   const OtpInputBoxes({
     super.key,
     required this.onChanged,
     this.onCompleted,
+    this.fillColor,
   });
 
   @override
@@ -101,7 +103,7 @@ class _OtpInputBoxesState extends State<OtpInputBoxes> {
                 counterText: '',
                 contentPadding: const EdgeInsets.symmetric(vertical: 12.0),
                 filled: true,
-                fillColor: AppColors.inputBg,
+                fillColor: widget.fillColor ?? AppColors.inputBg,
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10.0),
                   borderSide: const BorderSide(color: AppColors.borderGrey),
