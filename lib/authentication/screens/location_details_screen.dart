@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../providers/location_details_provider.dart';
 import 'profile_completed_screen.dart';
+import '../../home_dashboard/screens/home_dashboard_screen.dart';
 
 class LocationDetailsScreen extends StatefulWidget {
   final VoidCallback? onBackPressed;
@@ -19,7 +20,7 @@ class LocationDetailsScreen extends StatefulWidget {
 
 class _LocationDetailsScreenState extends State<LocationDetailsScreen> {
   final LocationDetailsProvider _locationProvider = LocationDetailsProvider();
-  
+
   late final TextEditingController _pincodeController;
   late final TextEditingController _addressController;
 
@@ -41,7 +42,9 @@ class _LocationDetailsScreenState extends State<LocationDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF1FDF6), // Same background as Login Screen
+      backgroundColor: const Color(
+        0xFFF1FDF6,
+      ), // Same background as Login Screen
       body: SafeArea(
         child: LayoutBuilder(
           builder: (context, constraints) {
@@ -50,21 +53,21 @@ class _LocationDetailsScreenState extends State<LocationDetailsScreen> {
 
             return SingleChildScrollView(
               child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  minHeight: height,
-                  minWidth: width,
-                ),
+                constraints: BoxConstraints(minHeight: height, minWidth: width),
                 child: IntrinsicHeight(
                   child: Stack(
                     children: [
                       // Main Content Layer
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: width * (24.0 / 393.0)),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: width * (24.0 / 393.0),
+                        ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            SizedBox(height: height * (100.0 / 852.0)), // Offset for back button
-                            
+                            SizedBox(
+                              height: height * (100.0 / 852.0),
+                            ), // Offset for back button
                             // Title
                             Text(
                               'Complete Your Profile',
@@ -75,9 +78,9 @@ class _LocationDetailsScreenState extends State<LocationDetailsScreen> {
                                 fontFamily: 'Inter',
                               ),
                             ),
-                            
+
                             SizedBox(height: height * (8.0 / 852.0)),
-                            
+
                             // Subtitle
                             Text(
                               'Add your Location details.',
@@ -87,9 +90,9 @@ class _LocationDetailsScreenState extends State<LocationDetailsScreen> {
                                 fontFamily: 'Inter',
                               ),
                             ),
-                            
+
                             SizedBox(height: height * (24.0 / 852.0)),
-                            
+
                             // Section Title
                             Text(
                               'Location',
@@ -100,9 +103,9 @@ class _LocationDetailsScreenState extends State<LocationDetailsScreen> {
                                 fontFamily: 'Inter',
                               ),
                             ),
-                            
+
                             SizedBox(height: height * (24.0 / 852.0)),
-                            
+
                             // Form Fields
                             ListenableBuilder(
                               listenable: _locationProvider,
@@ -119,9 +122,9 @@ class _LocationDetailsScreenState extends State<LocationDetailsScreen> {
                                       width: width,
                                       height: height,
                                     ),
-                                    
+
                                     SizedBox(height: height * (16.0 / 852.0)),
-                                    
+
                                     _buildDropdown(
                                       label: 'State',
                                       hintText: 'Select State',
@@ -131,9 +134,9 @@ class _LocationDetailsScreenState extends State<LocationDetailsScreen> {
                                       width: width,
                                       height: height,
                                     ),
-                                    
+
                                     SizedBox(height: height * (16.0 / 852.0)),
-                                    
+
                                     // District and Tehsil side-by-side
                                     Row(
                                       children: [
@@ -141,9 +144,11 @@ class _LocationDetailsScreenState extends State<LocationDetailsScreen> {
                                           child: _buildDropdown(
                                             label: 'District',
                                             hintText: 'Select District',
-                                            value: _locationProvider.selectedDistrict,
+                                            value: _locationProvider
+                                                .selectedDistrict,
                                             items: _locationProvider.districts,
-                                            onChanged: _locationProvider.setDistrict,
+                                            onChanged:
+                                                _locationProvider.setDistrict,
                                             width: width,
                                             height: height,
                                           ),
@@ -153,18 +158,20 @@ class _LocationDetailsScreenState extends State<LocationDetailsScreen> {
                                           child: _buildDropdown(
                                             label: 'Tehsil',
                                             hintText: 'Select Tehsil',
-                                            value: _locationProvider.selectedTehsil,
+                                            value: _locationProvider
+                                                .selectedTehsil,
                                             items: _locationProvider.tehsils,
-                                            onChanged: _locationProvider.setTehsil,
+                                            onChanged:
+                                                _locationProvider.setTehsil,
                                             width: width,
                                             height: height,
                                           ),
                                         ),
                                       ],
                                     ),
-                                    
+
                                     SizedBox(height: height * (16.0 / 852.0)),
-                                    
+
                                     _buildTextField(
                                       label: 'Pincode',
                                       hintText: 'Pincode',
@@ -174,13 +181,15 @@ class _LocationDetailsScreenState extends State<LocationDetailsScreen> {
                                       keyboardType: TextInputType.number,
                                       prefixIcon: Icons.location_on_outlined,
                                       maxLength: 6,
-                                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                                      inputFormatters: [
+                                        FilteringTextInputFormatter.digitsOnly,
+                                      ],
                                       width: width,
                                       height: height,
                                     ),
-                                    
+
                                     SizedBox(height: height * (16.0 / 852.0)),
-                                    
+
                                     _buildTextField(
                                       label: 'Address',
                                       hintText: 'Address',
@@ -196,9 +205,9 @@ class _LocationDetailsScreenState extends State<LocationDetailsScreen> {
                                 );
                               },
                             ),
-                            
+
                             const Spacer(),
-                            
+
                             // Save & Continue Button
                             ListenableBuilder(
                               listenable: _locationProvider,
@@ -208,29 +217,55 @@ class _LocationDetailsScreenState extends State<LocationDetailsScreen> {
                                   height: height * (52.0 / 852.0),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(8.0),
-                                    gradient: _locationProvider.isValid 
-                                      ? const LinearGradient(
-                                          colors: [Color(0xFF00A63E), Color(0xFF008236)],
-                                          stops: [0.3026, 1.0],
-                                        )
-                                      : null,
-                                    color: !_locationProvider.isValid ? Colors.grey.shade300 : null,
+                                    gradient: _locationProvider.isValid
+                                        ? const LinearGradient(
+                                            colors: [
+                                              Color(0xFF00A63E),
+                                              Color(0xFF008236),
+                                            ],
+                                            stops: [0.3026, 1.0],
+                                          )
+                                        : null,
+                                    color: !_locationProvider.isValid
+                                        ? Colors.grey.shade300
+                                        : null,
                                   ),
                                   child: Material(
                                     color: Colors.transparent,
                                     child: InkWell(
                                       borderRadius: BorderRadius.circular(8.0),
-                                      onTap: _locationProvider.isValid && !_locationProvider.isLoading
+                                      onTap:
+                                          _locationProvider.isValid &&
+                                              !_locationProvider.isLoading
                                           ? () {
-                                              _locationProvider.saveAndContinue(onSuccess: () {
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) => const ProfileCompletedScreen(),
-                                                  ),
-                                                );
-                                                widget.onSaveAndContinue?.call();
-                                              });
+                                              _locationProvider.saveAndContinue(
+                                                onSuccess: () {
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          ProfileCompletedScreen(
+                                                            onGoToHome: () {
+                                                              Navigator.pushAndRemoveUntil(
+                                                                context,
+                                                                MaterialPageRoute(
+                                                                  builder:
+                                                                      (
+                                                                        context,
+                                                                      ) =>
+                                                                          const HomeDashboardScreen(),
+                                                                ),
+                                                                (route) =>
+                                                                    false,
+                                                              );
+                                                            },
+                                                          ),
+                                                    ),
+                                                  );
+                                                  widget.onSaveAndContinue
+                                                      ?.call();
+                                                },
+                                              );
                                             }
                                           : null,
                                       child: Center(
@@ -238,16 +273,21 @@ class _LocationDetailsScreenState extends State<LocationDetailsScreen> {
                                             ? const SizedBox(
                                                 width: 24,
                                                 height: 24,
-                                                child: CircularProgressIndicator(
-                                                  color: Colors.white,
-                                                  strokeWidth: 2,
-                                                ),
+                                                child:
+                                                    CircularProgressIndicator(
+                                                      color: Colors.white,
+                                                      strokeWidth: 2,
+                                                    ),
                                               )
                                             : Text(
                                                 'Save & Continue',
                                                 style: TextStyle(
-                                                  color: _locationProvider.isValid ? Colors.white : Colors.grey.shade500,
-                                                  fontSize: width * (16.0 / 393.0),
+                                                  color:
+                                                      _locationProvider.isValid
+                                                      ? Colors.white
+                                                      : Colors.grey.shade500,
+                                                  fontSize:
+                                                      width * (16.0 / 393.0),
                                                   fontWeight: FontWeight.bold,
                                                   fontFamily: 'Inter',
                                                 ),
@@ -256,14 +296,16 @@ class _LocationDetailsScreenState extends State<LocationDetailsScreen> {
                                     ),
                                   ),
                                 );
-                              }
+                              },
                             ),
-                            
-                            SizedBox(height: height * (40.0 / 852.0)), // Bottom padding
+
+                            SizedBox(
+                              height: height * (40.0 / 852.0),
+                            ), // Bottom padding
                           ],
                         ),
                       ),
-                      
+
                       // Back Button Layer
                       Positioned(
                         top: height * (24.0 / 852.0),
@@ -308,10 +350,7 @@ class _LocationDetailsScreenState extends State<LocationDetailsScreen> {
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(12.0),
-            border: Border.all(
-              color: Colors.grey.shade300,
-              width: 1.0,
-            ),
+            border: Border.all(color: Colors.grey.shade300, width: 1.0),
           ),
           padding: EdgeInsets.symmetric(horizontal: width * (16.0 / 393.0)),
           alignment: Alignment.centerLeft,
@@ -339,10 +378,7 @@ class _LocationDetailsScreenState extends State<LocationDetailsScreen> {
               ),
               onChanged: onChanged,
               items: items.map<DropdownMenuItem<String>>((String item) {
-                return DropdownMenuItem<String>(
-                  value: item,
-                  child: Text(item),
-                );
+                return DropdownMenuItem<String>(value: item, child: Text(item));
               }).toList(),
             ),
           ),

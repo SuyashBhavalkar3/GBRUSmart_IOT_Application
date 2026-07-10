@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../app_colors.dart';
 import '../../providers/mobile_auto_provider.dart';
 import '../../widgets/mobile_auto/primary_gradient_button.dart';
+import '../../../home_dashboard/screens/home_dashboard_screen.dart';
 
 /// Screen displayed after the ownership transfer request is successfully submitted.
 class OwnershipTransferSuccessScreen extends ConsumerWidget {
@@ -68,9 +69,14 @@ class OwnershipTransferSuccessScreen extends ConsumerWidget {
               PrimaryGradientButton(
                 label: 'Go to Home',
                 onPressed: () {
-                  // Reset provider state and return back to Dashboard
+                  // Reset provider state and navigate to HomeDashboard (My Devices tab)
                   ref.read(mobileAutoProvider.notifier).resetFlow();
-                  Navigator.of(context).popUntil((route) => route.isFirst);
+                  Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(
+                      builder: (context) => const HomeDashboardScreen(),
+                    ),
+                    (route) => false,
+                  );
                 },
               ),
               const SizedBox(height: 12.0),

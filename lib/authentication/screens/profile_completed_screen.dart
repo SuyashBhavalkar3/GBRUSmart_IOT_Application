@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../home_dashboard/screens/home_dashboard_screen.dart';
 
 class ProfileCompletedScreen extends StatefulWidget {
   final VoidCallback? onGoToHome;
 
-  const ProfileCompletedScreen({
-    super.key,
-    this.onGoToHome,
-  });
+  const ProfileCompletedScreen({super.key, this.onGoToHome});
 
   @override
   State<ProfileCompletedScreen> createState() => _ProfileCompletedScreenState();
 }
 
-class _ProfileCompletedScreenState extends State<ProfileCompletedScreen> with SingleTickerProviderStateMixin {
+class _ProfileCompletedScreenState extends State<ProfileCompletedScreen>
+    with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _scaleAnimation;
   late Animation<double> _fadeAnimation;
@@ -21,7 +20,7 @@ class _ProfileCompletedScreenState extends State<ProfileCompletedScreen> with Si
   @override
   void initState() {
     super.initState();
-    
+
     _animationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 1000),
@@ -53,7 +52,9 @@ class _ProfileCompletedScreenState extends State<ProfileCompletedScreen> with Si
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF1FDF6), // Same background as Login Screen
+      backgroundColor: const Color(
+        0xFFF1FDF6,
+      ), // Same background as Login Screen
       body: SafeArea(
         child: LayoutBuilder(
           builder: (context, constraints) {
@@ -84,9 +85,9 @@ class _ProfileCompletedScreenState extends State<ProfileCompletedScreen> with Si
                       ),
                     ),
                   ),
-                  
+
                   SizedBox(height: height * (40.0 / 852.0)),
-                  
+
                   // Animated Text
                   FadeTransition(
                     opacity: _fadeAnimation,
@@ -98,13 +99,15 @@ class _ProfileCompletedScreenState extends State<ProfileCompletedScreen> with Si
                             fontSize: width * (22.0 / 393.0),
                             fontWeight: FontWeight.w700,
                             color: const Color(0xFF111827),
-                            height: 28.0 / 22.0, // line-height: 28px / font-size: 22px
+                            height:
+                                28.0 /
+                                22.0, // line-height: 28px / font-size: 22px
                             letterSpacing: 0,
                           ),
                         ),
-                        
+
                         SizedBox(height: height * (16.0 / 852.0)),
-                        
+
                         Text(
                           'Your profile has been successfully updated.\nYou are all set to explore the app.',
                           textAlign: TextAlign.center,
@@ -117,9 +120,9 @@ class _ProfileCompletedScreenState extends State<ProfileCompletedScreen> with Si
                       ],
                     ),
                   ),
-                  
+
                   SizedBox(height: height * (40.0 / 852.0)),
-                  
+
                   // Go to Home Button
                   FadeTransition(
                     opacity: _fadeAnimation,
@@ -137,7 +140,18 @@ class _ProfileCompletedScreenState extends State<ProfileCompletedScreen> with Si
                         color: Colors.transparent,
                         child: InkWell(
                           borderRadius: BorderRadius.circular(8.0),
-                          onTap: widget.onGoToHome,
+                          onTap:
+                              widget.onGoToHome ??
+                              () {
+                                Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const HomeDashboardScreen(),
+                                  ),
+                                  (route) => false,
+                                );
+                              },
                           child: Center(
                             child: Text(
                               'Go to Home',

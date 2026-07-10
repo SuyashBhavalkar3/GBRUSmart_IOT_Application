@@ -4,7 +4,7 @@ import '../../app_colors.dart';
 import '../../providers/mobile_auto_provider.dart';
 import '../../models/mobile_auto_device_model.dart';
 import '../../widgets/mobile_auto/primary_gradient_button.dart';
-import 'ownership_transfer_success_screen.dart';
+import 'confirm_otp_step1_screen.dart';
 
 /// Screen to request device ownership transfer when the previous owner is unavailable.
 class OwnershipTransferRequestScreen extends ConsumerStatefulWidget {
@@ -397,9 +397,15 @@ class _OwnershipTransferRequestScreenState extends ConsumerState<OwnershipTransf
                 label: 'Submit Request',
                 isEnabled: _isFormValid(),
                 onPressed: () {
+                  // Start OTP timer for step 1 verification
+                  ref.read(mobileAutoProvider.notifier).startResendTimer();
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => const OwnershipTransferSuccessScreen(),
+                      builder: (context) => const ConfirmOtpStep1Screen(
+                        buttonLabel: 'Verify & Continue',
+                        showSecurityNote: true,
+                        isTransferFlow: true,
+                      ),
                     ),
                   );
                 },

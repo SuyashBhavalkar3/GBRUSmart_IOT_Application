@@ -6,6 +6,7 @@ import '../models/device_state.dart';
 import 'automation_view.dart';
 import 'activity_view.dart';
 import 'settings_view.dart';
+import '../../screens/my_devices/my_devices_screen.dart';
 
 final activeTabProvider = StateProvider<int>((ref) => 0);
 
@@ -72,7 +73,11 @@ class DeviceDashboardScreen extends ConsumerWidget {
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: textDark),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (context) => const MyDevicesScreen()),
+            );
+          },
         ),
         title: null,
         actions: [

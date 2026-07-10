@@ -7,10 +7,15 @@ import '../../widgets/mobile_auto/otp_input_boxes.dart';
 import '../../widgets/mobile_auto/primary_gradient_button.dart';
 import 'device_added_success_screen.dart';
 import 'ownership_transfer_request_screen.dart';
+import 'ownership_transfer_success_screen.dart';
 
 /// Screen 6: Final OTP confirmation for Step 3 Approval.
+/// [isTransferFlow]: when true, navigates to OwnershipTransferSuccessScreen on success
+/// instead of DeviceAddedSuccessScreen.
 class ConfirmOtpStep3Screen extends ConsumerStatefulWidget {
-  const ConfirmOtpStep3Screen({super.key});
+  final bool isTransferFlow;
+
+  const ConfirmOtpStep3Screen({super.key, this.isTransferFlow = false});
 
   @override
   ConsumerState<ConfirmOtpStep3Screen> createState() => _ConfirmOtpStep3ScreenState();
@@ -191,12 +196,24 @@ class _ConfirmOtpStep3ScreenState extends ConsumerState<ConfirmOtpStep3Screen> {
                   final navigator = Navigator.of(context);
                   final verified = await notifier.verifyStep3Otp();
                   if (verified) {
-                    navigator.pushAndRemoveUntil(
-                      MaterialPageRoute(
-                        builder: (context) => const DeviceAddedSuccessScreen(),
-                      ),
-                      (route) => route.isFirst,
-                    );
+                    if (widget.isTransferFlow) {
+                      // Transfer Ownership flow → go to transfer success screen
+                      notifier.resetFlow();
+                      navigator.pushAndRemoveUntil(
+                        MaterialPageRoute(
+                          builder: (context) => const OwnershipTransferSuccessScreen(),
+                        ),
+                        (route) => route.isFirst,
+                      );
+                    } else {
+                      // Normal activate flow → go to device added success screen
+                      navigator.pushAndRemoveUntil(
+                        MaterialPageRoute(
+                          builder: (context) => const DeviceAddedSuccessScreen(),
+                        ),
+                        (route) => route.isFirst,
+                      );
+                    }
                   }
                 },
               ),

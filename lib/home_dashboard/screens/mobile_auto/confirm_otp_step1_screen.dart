@@ -12,11 +12,13 @@ import 'ownership_transfer_request_screen.dart';
 class ConfirmOtpStep1Screen extends ConsumerStatefulWidget {
   final String buttonLabel;
   final bool showSecurityNote;
+  final bool isTransferFlow;
 
   const ConfirmOtpStep1Screen({
     super.key,
     this.buttonLabel = 'Continue',
     this.showSecurityNote = false,
+    this.isTransferFlow = false,
   });
 
   @override
@@ -199,7 +201,9 @@ class _ConfirmOtpStep1ScreenState extends ConsumerState<ConfirmOtpStep1Screen> {
                       if (verified) {
                         navigator.push(
                           MaterialPageRoute(
-                            builder: (context) => const VerifyNumberStep2Screen(),
+                            builder: (context) => VerifyNumberStep2Screen(
+                              isTransferFlow: widget.isTransferFlow,
+                            ),
                           ),
                         );
                       }

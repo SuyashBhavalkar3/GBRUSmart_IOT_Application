@@ -10,8 +10,11 @@ import '../../widgets/mobile_auto/device_summary_card.dart';
 import 'confirm_otp_step3_screen.dart';
 
 /// Screen 5: Step 2 of onboarding. User verifies the SIM contact number inside the device.
+/// [isTransferFlow]: when true, passes flag down to Step 3 so success routes correctly.
 class VerifyNumberStep2Screen extends ConsumerStatefulWidget {
-  const VerifyNumberStep2Screen({super.key});
+  final bool isTransferFlow;
+
+  const VerifyNumberStep2Screen({super.key, this.isTransferFlow = false});
 
   @override
   ConsumerState<VerifyNumberStep2Screen> createState() => _VerifyNumberStep2ScreenState();
@@ -187,7 +190,9 @@ class _VerifyNumberStep2ScreenState extends ConsumerState<VerifyNumberStep2Scree
                     notifier.startResendTimer();
                     navigator.push(
                       MaterialPageRoute(
-                        builder: (context) => const ConfirmOtpStep3Screen(),
+                        builder: (context) => ConfirmOtpStep3Screen(
+                          isTransferFlow: widget.isTransferFlow,
+                        ),
                       ),
                     );
                   }

@@ -10,6 +10,7 @@ import '../../home_dashboard/screens/mobile_auto/select_device_to_activate_scree
 import '../../home_dashboard/screens/home_dashboard_screen.dart';
 import '../../home_dashboard/Knowledge_hub/knowledge_hub_screen.dart';
 import '../../home_dashboard/My_Profile/profile_screen.dart';
+import '../../control_device/screens/device_dashboard_screen.dart';
 
 /// Screen 8: Bottom-nav level screen displaying the user's owned and linked devices.
 class MyDevicesScreen extends ConsumerStatefulWidget {
@@ -30,11 +31,15 @@ class _MyDevicesScreenState extends ConsumerState<MyDevicesScreen> {
         deviceName: device.deviceName,
         currentOwnerLabel: 'another owner',
         onConfirm: () {
-          ref.read(mobileAutoProvider.notifier).confirmTransferOwnership(device.imeiNumber);
+          ref
+              .read(mobileAutoProvider.notifier)
+              .confirmTransferOwnership(device.imeiNumber);
           Navigator.of(context).pop();
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Ownership of ${device.deviceName} transferred successfully!'),
+              content: Text(
+                'Ownership of ${device.deviceName} transferred successfully!',
+              ),
               backgroundColor: AppColors.primaryGreen,
             ),
           );
@@ -57,13 +62,19 @@ class _MyDevicesScreenState extends ConsumerState<MyDevicesScreen> {
           icon: const Icon(Icons.arrow_back, color: AppColors.textDark),
           onPressed: () {
             Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (context) => const HomeDashboardScreen()),
+              MaterialPageRoute(
+                builder: (context) => const HomeDashboardScreen(),
+              ),
             );
           },
         ),
         title: const Text(
           'My Devices',
-          style: TextStyle(color: AppColors.textDark, fontWeight: FontWeight.bold, fontSize: 18.0),
+          style: TextStyle(
+            color: AppColors.textDark,
+            fontWeight: FontWeight.bold,
+            fontSize: 18.0,
+          ),
         ),
         backgroundColor: Colors.white,
         elevation: 0.5,
@@ -76,7 +87,7 @@ class _MyDevicesScreenState extends ConsumerState<MyDevicesScreen> {
               padding: const EdgeInsets.all(16.0),
               child: _buildSegmentedToggle(),
             ),
-            
+
             // Tab Content
             Expanded(
               child: SingleChildScrollView(
@@ -88,9 +99,9 @@ class _MyDevicesScreenState extends ConsumerState<MyDevicesScreen> {
                       _buildApprovedDevicesTab(approvedList)
                     else
                       _buildAddDevicesTab(),
-                    
+
                     const SizedBox(height: 24.0),
-                    
+
                     // Always-visible "My Linked Devices" section
                     const Text(
                       'My Linked Devices',
@@ -129,14 +140,18 @@ class _MyDevicesScreenState extends ConsumerState<MyDevicesScreen> {
               onTap: () => setState(() => _activeTab = 0),
               child: Container(
                 decoration: BoxDecoration(
-                  color: _activeTab == 0 ? AppColors.primaryGreen : Colors.transparent,
+                  color: _activeTab == 0
+                      ? AppColors.primaryGreen
+                      : Colors.transparent,
                   borderRadius: BorderRadius.circular(24.0),
                 ),
                 child: Center(
                   child: Text(
                     'My Approved Devices',
                     style: TextStyle(
-                      color: _activeTab == 0 ? Colors.white : AppColors.textGrey,
+                      color: _activeTab == 0
+                          ? Colors.white
+                          : AppColors.textGrey,
                       fontWeight: FontWeight.bold,
                       fontSize: 13.0,
                     ),
@@ -150,14 +165,18 @@ class _MyDevicesScreenState extends ConsumerState<MyDevicesScreen> {
               onTap: () => setState(() => _activeTab = 1),
               child: Container(
                 decoration: BoxDecoration(
-                  color: _activeTab == 1 ? AppColors.primaryGreen : Colors.transparent,
+                  color: _activeTab == 1
+                      ? AppColors.primaryGreen
+                      : Colors.transparent,
                   borderRadius: BorderRadius.circular(24.0),
                 ),
                 child: Center(
                   child: Text(
                     'Add Devices',
                     style: TextStyle(
-                      color: _activeTab == 1 ? Colors.white : AppColors.textGrey,
+                      color: _activeTab == 1
+                          ? Colors.white
+                          : AppColors.textGrey,
                       fontWeight: FontWeight.bold,
                       fontSize: 13.0,
                     ),
@@ -175,7 +194,8 @@ class _MyDevicesScreenState extends ConsumerState<MyDevicesScreen> {
     if (approvedList.isEmpty) {
       return AddDeviceEmptyState(
         title: 'No Approved Devices',
-        subtitle: 'You do not have any approved devices registered under your account.',
+        subtitle:
+            'You do not have any approved devices registered under your account.',
         buttonLabel: 'Register Device',
         onButtonPressed: () => setState(() => _activeTab = 1),
       );
@@ -202,7 +222,9 @@ class _MyDevicesScreenState extends ConsumerState<MyDevicesScreen> {
       separatorBuilder: (context, index) => const SizedBox(height: 16.0),
       itemBuilder: (context, index) {
         final device = sortedList[index];
-        final isTransferNeeded = device.ownershipStatus == DeviceOwnershipStatus.registeredToAnotherOwner;
+        final isTransferNeeded =
+            device.ownershipStatus ==
+            DeviceOwnershipStatus.registeredToAnotherOwner;
 
         if (isTransferNeeded) {
           // Wrapped in a warning container with an orange top label
@@ -211,7 +233,10 @@ class _MyDevicesScreenState extends ConsumerState<MyDevicesScreen> {
             children: [
               Container(
                 width: double.infinity,
-                padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12.0,
+                  vertical: 6.0,
+                ),
                 decoration: const BoxDecoration(
                   color: Color(0xFFFFF3E0),
                   borderRadius: BorderRadius.only(
@@ -221,7 +246,11 @@ class _MyDevicesScreenState extends ConsumerState<MyDevicesScreen> {
                 ),
                 child: const Row(
                   children: [
-                    Icon(Icons.warning_amber_rounded, color: Color(0xFFE65100), size: 14.0),
+                    Icon(
+                      Icons.warning_amber_rounded,
+                      color: Color(0xFFE65100),
+                      size: 14.0,
+                    ),
                     SizedBox(width: 6.0),
                     Text(
                       'Registered to Another Owner',
@@ -247,9 +276,10 @@ class _MyDevicesScreenState extends ConsumerState<MyDevicesScreen> {
           device: device,
           variant: DeviceCardVariant.approved,
           onCardTap: () {
-            // TODO: navigate to device settings
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Opening ${device.deviceName} settings...')),
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const DeviceDashboardScreen(),
+              ),
             );
           },
         );
@@ -260,7 +290,8 @@ class _MyDevicesScreenState extends ConsumerState<MyDevicesScreen> {
   Widget _buildAddDevicesTab() {
     return AddDeviceEmptyState(
       title: 'No Devices Added Yet',
-      subtitle: "We couldn't find any Mobile Auto devices linked to your account.",
+      subtitle:
+          "We couldn't find any Mobile Auto devices linked to your account.",
       buttonLabel: 'Add Your Device',
       onButtonPressed: () {
         Navigator.of(context).push(
@@ -300,6 +331,13 @@ class _MyDevicesScreenState extends ConsumerState<MyDevicesScreen> {
         return DeviceCard(
           device: device,
           variant: DeviceCardVariant.linked,
+          onCardTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const DeviceDashboardScreen(),
+              ),
+            );
+          },
         );
       },
     );
@@ -367,7 +405,9 @@ class _MyDevicesScreenState extends ConsumerState<MyDevicesScreen> {
       onTap: () {
         if (index == 2) {
           Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => const HomeDashboardScreen()),
+            MaterialPageRoute(
+              builder: (context) => const HomeDashboardScreen(),
+            ),
           );
         } else if (index == 3) {
           Navigator.of(context).pushReplacement(

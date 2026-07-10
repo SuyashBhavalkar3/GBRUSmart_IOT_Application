@@ -10,8 +10,9 @@ enum DeviceCardVariant { activation, approved, transferNeeded, linked }
 class DeviceCard extends StatelessWidget {
   final MobileAutoDevice device;
   final DeviceCardVariant variant;
-  final VoidCallback? onPrimaryAction; // Taps on "Activate" or "Transfer Ownership"
-  final VoidCallback? onCardTap;        // Tap handler for approved cards
+  final VoidCallback?
+  onPrimaryAction; // Taps on "Activate" or "Transfer Ownership"
+  final VoidCallback? onCardTap; // Tap handler for approved cards
 
   const DeviceCard({
     super.key,
@@ -23,7 +24,20 @@ class DeviceCard extends StatelessWidget {
 
   /// Helper to convert a month index to shorthand name.
   String _monthName(int month) {
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const months = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+    ];
     if (month >= 1 && month <= 12) return months[month - 1];
     return '';
   }
@@ -35,8 +49,10 @@ class DeviceCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isLinked = variant == DeviceCardVariant.linked;
-    final padding = isLinked ? const EdgeInsets.all(10.0) : const EdgeInsets.all(16.0);
-    
+    final padding = isLinked
+        ? const EdgeInsets.all(10.0)
+        : const EdgeInsets.all(16.0);
+
     // Main card wrapper
     Widget cardContent = Container(
       padding: padding,
@@ -95,7 +111,7 @@ class DeviceCard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 12.0),
-          
+
           // IMEI Number
           Text(
             'IMEI NO.',
@@ -115,12 +131,15 @@ class DeviceCard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 10.0),
-          
+
           // Master number details
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 6.0, vertical: 2.0),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 6.0,
+                  vertical: 2.0,
+                ),
                 decoration: BoxDecoration(
                   color: const Color(0xFFFFF3E0),
                   borderRadius: BorderRadius.circular(4.0),
@@ -160,7 +179,7 @@ class DeviceCard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 8.0),
-          
+
           // Installation date
           Text(
             'Installed: ${_formatDate(device.installedDate)}',
@@ -170,13 +189,18 @@ class DeviceCard extends StatelessWidget {
               fontWeight: FontWeight.w500,
             ),
           ),
-          
+
           // Bottom button visual overrides
-          if (variant == DeviceCardVariant.activation || variant == DeviceCardVariant.transferNeeded) ...[
+          if (variant == DeviceCardVariant.activation ||
+              variant == DeviceCardVariant.transferNeeded) ...[
             const Divider(height: 20.0, color: AppColors.borderGrey),
             PrimaryGradientButton(
-              label: variant == DeviceCardVariant.activation ? 'Activate' : 'Transfer Ownership',
-              backgroundColor: variant == DeviceCardVariant.activation ? null : const Color(0xFFE65100),
+              label: variant == DeviceCardVariant.activation
+                  ? 'Activate'
+                  : 'Transfer Ownership',
+              backgroundColor: variant == DeviceCardVariant.activation
+                  ? null
+                  : const Color(0xFFE65100),
               onPressed: onPrimaryAction,
             ),
           ],
@@ -184,12 +208,11 @@ class DeviceCard extends StatelessWidget {
       ),
     );
 
-    // If approved, make the whole card tappable
-    if (variant == DeviceCardVariant.approved && onCardTap != null) {
-      return GestureDetector(
-        onTap: onCardTap,
-        child: cardContent,
-      );
+    // If approved or linked, make the whole card tappable
+    if ((variant == DeviceCardVariant.approved ||
+            variant == DeviceCardVariant.linked) &&
+        onCardTap != null) {
+      return GestureDetector(onTap: onCardTap, child: cardContent);
     }
 
     return cardContent;
@@ -219,11 +242,17 @@ class DeviceCard extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 8.0,
+                vertical: 4.0,
+              ),
               decoration: BoxDecoration(
                 color: AppColors.lightGreenBg,
                 borderRadius: BorderRadius.circular(6.0),
-                border: Border.all(color: AppColors.primaryGreen.withAlpha(51), width: 0.5),
+                border: Border.all(
+                  color: AppColors.primaryGreen.withAlpha(51),
+                  width: 0.5,
+                ),
               ),
               child: const Text(
                 'Active',
@@ -235,7 +264,11 @@ class DeviceCard extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 8.0),
-            const Icon(Icons.edit_outlined, color: AppColors.textGrey, size: 18.0),
+            const Icon(
+              Icons.edit_outlined,
+              color: AppColors.textGrey,
+              size: 18.0,
+            ),
           ],
         );
       case DeviceCardVariant.transferNeeded:

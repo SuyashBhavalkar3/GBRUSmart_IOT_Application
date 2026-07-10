@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../widgets/slide_button.dart';
 
 // TODO: If the logo provided is an SVG, add flutter_svg dependency to pubspec.yaml
-// and import 'package:flutter_svg/flutter_svg.dart'; here. Do not modify pubspec.yaml 
+// and import 'package:flutter_svg/flutter_svg.dart'; here. Do not modify pubspec.yaml
 // directly as per constraints.
 
 class SplashScreen extends StatefulWidget {
@@ -37,15 +37,13 @@ class _SplashScreenState extends State<SplashScreen>
     );
 
     // Smooth bottom button fade up
-    _slideAnimation = Tween<Offset>(
-      begin: const Offset(0, 0.5),
-      end: Offset.zero,
-    ).animate(
-      CurvedAnimation(
-        parent: _animationController,
-        curve: const Interval(0.4, 1.0, curve: Curves.easeOutCubic),
-      ),
-    );
+    _slideAnimation =
+        Tween<Offset>(begin: const Offset(0, 0.5), end: Offset.zero).animate(
+          CurvedAnimation(
+            parent: _animationController,
+            curve: const Interval(0.4, 1.0, curve: Curves.easeOutCubic),
+          ),
+        );
 
     _animationController.forward();
   }
@@ -80,20 +78,25 @@ class _SplashScreenState extends State<SplashScreen>
                     // Unified Logo Section
                     Positioned(
                       top: height * (210.0 / 852.0),
-                      left: width * (35.0 / 393.0),
+                      left: 0,
+                      right: 0,
                       child: FadeTransition(
                         opacity: _fadeAnimation,
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
                               children: [
                                 // TODO: To fully render the 'Inter' font, you must manually add the font assets to pubspec.yaml
                                 // 'Smart' Text, offset from the top of the GBRU turban
                                 Padding(
-                                  padding: EdgeInsets.only(top: height * (25.9 / 852.0)), // 235.9 - 210.0 = 25.9
+                                  padding: EdgeInsets.only(
+                                    top: height * (25.9 / 852.0),
+                                  ), // 235.9 - 210.0 = 25.9
                                   child: Text(
                                     'Smart',
                                     style: TextStyle(
@@ -102,14 +105,15 @@ class _SplashScreenState extends State<SplashScreen>
                                       fontWeight: FontWeight.w900,
                                       color: const Color(0xFF1E4123),
                                       height: 1.0,
-                                      letterSpacing: -1.0, // Tight kerning to match brand design
+                                      letterSpacing:
+                                          -1.0, // Tight kerning to match brand design
                                     ),
                                   ),
                                 ),
-                                
+
                                 // Explicit spacing to push GBRU away from 't'
                                 SizedBox(width: width * (5.0 / 393.0)),
-                                
+
                                 // 'GBRU' Image
                                 Image.asset(
                                   'assets/authentication_assets/download.png',
@@ -118,18 +122,19 @@ class _SplashScreenState extends State<SplashScreen>
                                 ),
                               ],
                             ),
-                            
+
                             // Subtitle Section
                             Transform.translate(
-                              // Offset subtitle to exact design coords: 
-                              // Row ends at 296.416. Subtitle starts at 287.6. Diff = -8.816
-                              // Left offset = 65.55 - 35 = 30.55
-                              offset: Offset(width * (30.55 / 393.0), height * (-8.816 / 852.0)),
+                              // Offset subtitle to exact design coords
+                              offset: Offset(0, height * (-8.816 / 852.0)),
                               child: Text(
                                 'STRONG | SMART | SUPERIOR',
                                 style: TextStyle(
                                   fontFamily: 'Inter',
-                                  fontSize: width * (10.0 / 393.0), // Decreased from 14.0 for consistency
+                                  fontSize:
+                                      width *
+                                      (10.0 /
+                                          393.0), // Decreased from 14.0 for consistency
                                   fontWeight: FontWeight.w800,
                                   letterSpacing: 1.5,
                                   color: const Color(0xFF1E4123),
@@ -140,7 +145,7 @@ class _SplashScreenState extends State<SplashScreen>
                         ),
                       ),
                     ),
-                    
+
                     // Bottom Button Section
                     Positioned(
                       bottom: height * (38.0 / 852.0),

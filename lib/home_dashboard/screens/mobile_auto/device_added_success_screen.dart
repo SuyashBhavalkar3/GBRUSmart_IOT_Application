@@ -7,6 +7,7 @@ import '../../widgets/mobile_auto/primary_gradient_button.dart';
 import '../../widgets/mobile_auto/device_details_card.dart';
 import 'add_device_id_screen.dart';
 import 'select_device_to_activate_screen.dart';
+import 'ownership_transfer_request_screen.dart';
 
 /// Screen 7: Success screen displayed when the device is added successfully.
 /// Supports both self-owned devices and devices owned by another user.
@@ -169,11 +170,9 @@ class DeviceAddedSuccessScreen extends ConsumerWidget {
                   label: 'Transfer Ownership',
                   backgroundColor: const Color(0xFFE65100),
                   onPressed: () {
-                    // TODO: navigate to transfer ownership flow
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Navigating to transfer ownership flow...'),
-                        backgroundColor: Color(0xFFE65100),
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const OwnershipTransferRequestScreen(),
                       ),
                     );
                   },

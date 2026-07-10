@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'control_device/screens/device_dashboard_screen.dart';
+import 'authentication/screens/splash_screen.dart';
+import 'authentication/screens/login_screen.dart';
 
 void main() {
-  runApp(
-    const ProviderScope(
-      child: MyApp(),
-    ),
-  );
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -19,12 +16,19 @@ class MyApp extends StatelessWidget {
       title: 'GBRU Mobile Auto',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF00A859),
-        ),
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF00A859)),
         useMaterial3: true,
       ),
-      home: const DeviceDashboardScreen(),
+      home: Builder(
+        builder: (context) => SplashScreen(
+          onGetStarted: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const LoginScreen()),
+            );
+          },
+        ),
+      ),
     );
   }
 }
