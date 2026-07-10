@@ -378,7 +378,7 @@ class DeviceDashboardScreen extends ConsumerWidget {
                                 borderRadius: BorderRadius.circular(24),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: Colors.black.withOpacity(0.04),
+                                    color: Colors.black.withValues(alpha: 0.0392),
                                     blurRadius: 16,
                                     offset: const Offset(0, 8),
                                   ),
@@ -493,9 +493,7 @@ class DeviceDashboardScreen extends ConsumerWidget {
                                       backgroundColor: primaryGreen,
                                       foregroundColor: Colors.white,
                                       elevation: 4,
-                                      shadowColor: primaryGreen.withOpacity(
-                                        0.4,
-                                      ),
+                                      shadowColor: primaryGreen.withValues(alpha: 0.4),
                                       padding: const EdgeInsets.symmetric(
                                         vertical: 16,
                                       ),
@@ -545,7 +543,7 @@ class DeviceDashboardScreen extends ConsumerWidget {
                                       backgroundColor: stopRed,
                                       foregroundColor: Colors.white,
                                       elevation: 4,
-                                      shadowColor: stopRed.withOpacity(0.4),
+                                      shadowColor: stopRed.withValues(alpha: 0.4000),
                                       padding: const EdgeInsets.symmetric(
                                         vertical: 16,
                                       ),
@@ -685,7 +683,7 @@ class DeviceDashboardScreen extends ConsumerWidget {
                                 borderRadius: BorderRadius.circular(24),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: Colors.black.withOpacity(0.03),
+                                    color: Colors.black.withValues(alpha: 0.0314),
                                     blurRadius: 12,
                                     offset: const Offset(0, 6),
                                   ),
@@ -762,7 +760,7 @@ class DeviceDashboardScreen extends ConsumerWidget {
                                         color: blueBg,
                                         borderRadius: BorderRadius.circular(12),
                                         border: Border.all(
-                                          color: blueAccent.withOpacity(0.3),
+                                          color: blueAccent.withValues(alpha: 0.2980),
                                         ),
                                       ),
                                       child: Row(

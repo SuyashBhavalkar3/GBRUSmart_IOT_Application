@@ -322,7 +322,9 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
           subtitle: '2 Devices',
           imagePath: 'assets/home_dashboard_assets/1ac4b5b1fed93ebf8315b1b13f434db065bf1a22.png',
           onTap: () {
-            // TODO: check for pre-registered devices to decide between SelectDeviceToActivateScreen and AddMobileAutoEmptyScreen
+            // Phase 1: always navigate to SelectDeviceToActivateScreen.
+            // Future: query backend to check pre-registered devices and route to
+            // AddMobileAutoEmptyScreen when no pending activations exist.
             Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (context) => const SelectDeviceToActivateScreen(),

@@ -212,7 +212,7 @@ class CtSensorScreen extends ConsumerWidget {
                             borderRadius: BorderRadius.circular(16 * scale),
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black.withOpacity(0.04),
+                                color: Colors.black.withValues(alpha: 0.0392),
                                 blurRadius: 10,
                                 offset: const Offset(0, 4),
                               ),
@@ -434,7 +434,7 @@ class CtSensorScreen extends ConsumerWidget {
         boxShadow: [
           if (!isSelected)
             BoxShadow(
-              color: Colors.black.withOpacity(0.03),
+              color: Colors.black.withValues(alpha: 0.0314),
               blurRadius: 10,
               offset: const Offset(0, 2),
             ),
@@ -546,7 +546,7 @@ class CtSensorScreen extends ConsumerWidget {
 class _SendingCommandDialog extends ConsumerWidget {
   final VoidCallback onCancel;
 
-  const _SendingCommandDialog({Key? key, required this.onCancel}) : super(key: key);
+  const _SendingCommandDialog({required this.onCancel});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -633,10 +633,9 @@ class _CommandFailedDialog extends StatelessWidget {
   final VoidCallback onCancel;
 
   const _CommandFailedDialog({
-    Key? key,
     required this.onTryAgain,
     required this.onCancel,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -745,9 +744,8 @@ class _CommandSuccessDialog extends StatelessWidget {
   final VoidCallback onOkPressed;
 
   const _CommandSuccessDialog({
-    Key? key,
     required this.onOkPressed,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -258,7 +258,7 @@ class _KnowledgeHubDetailScreenState extends State<KnowledgeHubDetailScreen> {
                 Container(
                   padding: const EdgeInsets.all(6.0),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.18),
+                    color: Colors.white.withValues(alpha: 0.1804),
                     shape: BoxShape.circle,
                   ),
                   child: Icon(
@@ -280,7 +280,7 @@ class _KnowledgeHubDetailScreenState extends State<KnowledgeHubDetailScreen> {
                 Text(
                   guide.subtitle,
                   style: TextStyle(
-                    color: Colors.white.withOpacity(0.75),
+                    color: Colors.white.withValues(alpha: 0.7490),
                     fontSize: 10.0,
                     height: 1.3,
                   ),
@@ -317,7 +317,7 @@ class _KnowledgeHubDetailScreenState extends State<KnowledgeHubDetailScreen> {
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(16.0),
-              border: Border.all(color: AppColors.borderGrey.withOpacity(0.6)),
+              border: Border.all(color: AppColors.borderGrey.withValues(alpha: 0.6000)),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -407,7 +407,7 @@ class _KnowledgeHubDetailScreenState extends State<KnowledgeHubDetailScreen> {
                       child: Container(
                         padding: const EdgeInsets.symmetric(horizontal: 6.0, vertical: 2.0),
                         decoration: BoxDecoration(
-                          color: Colors.black.withOpacity(0.6),
+                          color: Colors.black.withValues(alpha: 0.6000),
                           borderRadius: BorderRadius.circular(4.0),
                         ),
                         child: Text(
@@ -457,7 +457,7 @@ class _KnowledgeHubDetailScreenState extends State<KnowledgeHubDetailScreen> {
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(16.0),
-            border: Border.all(color: AppColors.borderGrey.withOpacity(0.6)),
+            border: Border.all(color: AppColors.borderGrey.withValues(alpha: 0.6000)),
           ),
           child: Row(
             children: [
@@ -465,7 +465,7 @@ class _KnowledgeHubDetailScreenState extends State<KnowledgeHubDetailScreen> {
                 width: 40.0,
                 height: 40.0,
                 decoration: BoxDecoration(
-                  color: docColor.withOpacity(0.12),
+                  color: docColor.withValues(alpha: 0.1216),
                   borderRadius: BorderRadius.circular(8.0),
                 ),
                 child: Icon(
@@ -503,7 +503,7 @@ class _KnowledgeHubDetailScreenState extends State<KnowledgeHubDetailScreen> {
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 1.0),
                           decoration: BoxDecoration(
-                            border: Border.all(color: docColor.withOpacity(0.5)),
+                            border: Border.all(color: docColor.withValues(alpha: 0.5020)),
                             borderRadius: BorderRadius.circular(4.0),
                           ),
                           child: const Text(
@@ -558,7 +558,7 @@ class _KnowledgeHubDetailScreenState extends State<KnowledgeHubDetailScreen> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16.0),
-        border: Border.all(color: AppColors.borderGrey.withOpacity(0.6)),
+        border: Border.all(color: AppColors.borderGrey.withValues(alpha: 0.6000)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import '../widgets/slide_button.dart';
 
-// TODO: If the logo provided is an SVG, add flutter_svg dependency to pubspec.yaml
-// and import 'package:flutter_svg/flutter_svg.dart'; here. Do not modify pubspec.yaml
-// directly as per constraints.
-
 class SplashScreen extends StatefulWidget {
   final VoidCallback? onGetStarted;
 
@@ -61,7 +57,6 @@ class _SplashScreenState extends State<SplashScreen>
         fit: StackFit.expand,
         children: [
           // Background Image
-          // TODO: Update the asset path to the actual background image provided
           Image.asset(
             'assets/authentication_assets/background.jpg',
             fit: BoxFit.cover, // Cover entire screen, no distortion
@@ -91,7 +86,6 @@ class _SplashScreenState extends State<SplashScreen>
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                // TODO: To fully render the 'Inter' font, you must manually add the font assets to pubspec.yaml
                                 // 'Smart' Text, offset from the top of the GBRU turban
                                 Padding(
                                   padding: EdgeInsets.only(

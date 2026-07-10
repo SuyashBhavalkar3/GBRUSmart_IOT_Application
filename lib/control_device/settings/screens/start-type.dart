@@ -52,9 +52,9 @@ Widget _buildStarterImage(String assetPath, IconData fallbackIcon, Color color) 
     width: 48,
     height: 48,
     decoration: BoxDecoration(
-      color: color.withOpacity(0.1),
+      color: color.withValues(alpha: 0.1020),
       borderRadius: BorderRadius.circular(12),
-      border: Border.all(color: color.withOpacity(0.2)),
+      border: Border.all(color: color.withValues(alpha: 0.2000)),
     ),
     child: Center(
       child: Icon(

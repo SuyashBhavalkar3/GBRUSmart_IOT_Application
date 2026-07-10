@@ -74,10 +74,10 @@ class _OtpInputWidgetState extends State<OtpInputWidget> {
             ),
           ),
           child: Center(
-            child: RawKeyboardListener(
+            child: KeyboardListener(
               focusNode: FocusNode(), // Dummy node to capture key events before textfield
-              onKey: (event) {
-                if (event is RawKeyDownEvent && 
+              onKeyEvent: (event) {
+                if (event is KeyDownEvent && 
                     event.logicalKey == LogicalKeyboardKey.backspace &&
                     _controllers[index].text.isEmpty &&
                     index > 0) {
