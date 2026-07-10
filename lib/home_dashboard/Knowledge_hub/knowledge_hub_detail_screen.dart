@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../app_colors.dart';
 import 'knowledge_hub_data.dart';
+import '../screens/home_dashboard_screen.dart';
+import '../../screens/my_devices/my_devices_screen.dart';
+import '../My_Profile/profile_screen.dart';
 
 /// Screen 10: Detail screen displaying knowledge bases specific to the selected device category.
 class KnowledgeHubDetailScreen extends StatefulWidget {
@@ -214,6 +217,7 @@ class _KnowledgeHubDetailScreenState extends State<KnowledgeHubDetailScreen> {
           ),
         ),
       ),
+      bottomNavigationBar: _buildBottomNavigationBar(),
     );
   }
 
@@ -606,6 +610,99 @@ class _KnowledgeHubDetailScreenState extends State<KnowledgeHubDetailScreen> {
                 'Email Support Request',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13.5),
               ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBottomNavigationBar() {
+    return Container(
+      height: 72.0,
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(20.0),
+          topRight: Radius.circular(20.0),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 10.0,
+            offset: Offset(0, -2),
+          ),
+        ],
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          _buildNavItem(0, Icons.layers_outlined, 'My Devices'),
+          _buildNavItem(1, Icons.widgets_outlined, 'Product'),
+          _buildNavItem(2, Icons.home_outlined, 'Home'),
+          _buildNavItem(3, Icons.book_outlined, 'Knowledge'),
+          _buildNavItem(4, Icons.person_outline, 'Profile'),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildNavItem(int index, IconData icon, String label) {
+    const int currentIndex = 3; // Index 3 is 'Knowledge'
+    final isSelected = currentIndex == index;
+
+    if (isSelected) {
+      return Container(
+        padding: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 8.0),
+        decoration: BoxDecoration(
+          color: const Color(0xFFE8F5E9),
+          borderRadius: BorderRadius.circular(16.0),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(icon, color: AppColors.primaryGreen, size: 20.0),
+            const SizedBox(width: 6.0),
+            Text(
+              label,
+              style: const TextStyle(
+                color: AppColors.primaryGreen,
+                fontWeight: FontWeight.bold,
+                fontSize: 12.0,
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    return GestureDetector(
+      onTap: () {
+        if (index == 0) {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => const MyDevicesScreen()),
+          );
+        } else if (index == 2) {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => const HomeDashboardScreen()),
+          );
+        } else if (index == 4) {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => const ProfileScreen()),
+          );
+        }
+      },
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(icon, color: AppColors.textGrey, size: 22.0),
+          const SizedBox(height: 2.0),
+          Text(
+            label,
+            style: const TextStyle(
+              color: AppColors.textGrey,
+              fontSize: 10.0,
+              fontWeight: FontWeight.w500,
             ),
           ),
         ],
