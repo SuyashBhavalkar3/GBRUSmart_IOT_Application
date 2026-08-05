@@ -212,11 +212,7 @@ class CtSensorScreen extends ConsumerWidget {
                             borderRadius: BorderRadius.circular(16 * scale),
                             boxShadow: [
                               BoxShadow(
-<<<<<<< HEAD
-                                color: Colors.black.withValues(alpha: 0.0392),
-=======
                                 color: Colors.black.withOpacity(0.04),
->>>>>>> origin/ayush_localDev
                                 blurRadius: 10,
                                 offset: const Offset(0, 4),
                               ),
@@ -438,11 +434,7 @@ class CtSensorScreen extends ConsumerWidget {
         boxShadow: [
           if (!isSelected)
             BoxShadow(
-<<<<<<< HEAD
-              color: Colors.black.withValues(alpha: 0.0314),
-=======
               color: Colors.black.withOpacity(0.03),
->>>>>>> origin/ayush_localDev
               blurRadius: 10,
               offset: const Offset(0, 2),
             ),
@@ -554,11 +546,7 @@ class CtSensorScreen extends ConsumerWidget {
 class _SendingCommandDialog extends ConsumerWidget {
   final VoidCallback onCancel;
 
-<<<<<<< HEAD
-  const _SendingCommandDialog({required this.onCancel});
-=======
   const _SendingCommandDialog({Key? key, required this.onCancel}) : super(key: key);
->>>>>>> origin/ayush_localDev
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -645,16 +633,10 @@ class _CommandFailedDialog extends StatelessWidget {
   final VoidCallback onCancel;
 
   const _CommandFailedDialog({
-<<<<<<< HEAD
-    required this.onTryAgain,
-    required this.onCancel,
-  });
-=======
     Key? key,
     required this.onTryAgain,
     required this.onCancel,
   }) : super(key: key);
->>>>>>> origin/ayush_localDev
 
   @override
   Widget build(BuildContext context) {
@@ -763,14 +745,9 @@ class _CommandSuccessDialog extends StatelessWidget {
   final VoidCallback onOkPressed;
 
   const _CommandSuccessDialog({
-<<<<<<< HEAD
-    required this.onOkPressed,
-  });
-=======
     Key? key,
     required this.onOkPressed,
   }) : super(key: key);
->>>>>>> origin/ayush_localDev
 
   @override
   Widget build(BuildContext context) {
