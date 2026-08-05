@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+import 'package:flutter/material.dart';
+>>>>>>> origin/ayush_localDev
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class CtSensorState {

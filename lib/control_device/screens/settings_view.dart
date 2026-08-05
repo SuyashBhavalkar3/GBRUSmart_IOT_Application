@@ -538,6 +538,29 @@ class SettingsView extends ConsumerWidget {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
+<<<<<<< HEAD
+=======
+          borderRadius: BorderRadius.circular(20),
+          onTap: onTap,
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Row(
+
+        children: [
+          Container(
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+              color: iconBgColor,
+              shape: BoxShape.circle,
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 12),
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+>>>>>>> origin/ayush_localDev
           borderRadius: BorderRadius.circular(20),
           onTap: onTap,
           child: Padding(
@@ -585,6 +608,9 @@ class SettingsView extends ConsumerWidget {
           ),
         ),
       ),
+            ),
+          ),
+        ),
     );
   }
 }
