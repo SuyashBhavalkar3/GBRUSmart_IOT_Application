@@ -538,8 +538,6 @@ class SettingsView extends ConsumerWidget {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-<<<<<<< HEAD
-=======
           borderRadius: BorderRadius.circular(20),
           onTap: onTap,
           child: Padding(
@@ -560,7 +558,6 @@ class SettingsView extends ConsumerWidget {
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: Colors.white,
->>>>>>> origin/ayush_localDev
           borderRadius: BorderRadius.circular(20),
           onTap: onTap,
           child: Padding(
