@@ -543,6 +543,26 @@ class SettingsView extends ConsumerWidget {
           child: Padding(
             padding: const EdgeInsets.all(16),
             child: Row(
+
+        children: [
+          Container(
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+              color: iconBgColor,
+              shape: BoxShape.circle,
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 12),
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          onTap: onTap,
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Row(
               children: [
                 Container(
                   width: 40,
@@ -585,6 +605,9 @@ class SettingsView extends ConsumerWidget {
           ),
         ),
       ),
+            ),
+          ),
+        ),
     );
   }
 }

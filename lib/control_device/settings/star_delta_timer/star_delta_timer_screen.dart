@@ -86,7 +86,7 @@ class StarDeltaTimerScreen extends ConsumerWidget {
                             borderRadius: BorderRadius.circular(16 * scale),
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black.withValues(alpha: 0.0392),
+                                color: Colors.black.withOpacity(0.04),
                                 blurRadius: 10,
                                 offset: const Offset(0, 4),
                               ),
@@ -471,7 +471,7 @@ class StarDeltaTimerScreen extends ConsumerWidget {
         boxShadow: isEnabled
             ? [
                 BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.0510),
+                  color: Colors.black.withOpacity(0.05),
                   blurRadius: 8,
                   offset: const Offset(0, 2),
                 ),
@@ -506,7 +506,7 @@ class StarDeltaTimerScreen extends ConsumerWidget {
           duration: const Duration(milliseconds: 200),
           height: 44 * scale,
           decoration: BoxDecoration(
-            color: isSelected ? const Color(0xFF00A63E).withValues(alpha: 0.1020) : Colors.white,
+            color: isSelected ? const Color(0xFF00A63E).withOpacity(0.1) : Colors.white,
             borderRadius: BorderRadius.circular(8 * scale),
             border: Border.all(
               color: isSelected ? const Color(0xFF00A63E) : const Color(0xFFE5E7EB),
@@ -564,7 +564,10 @@ void _showSuccessPopup(BuildContext context) {
 class _TopSuccessPopup extends ConsumerStatefulWidget {
   final VoidCallback onDismissed;
 
-  const _TopSuccessPopup({required this.onDismissed});
+  const _TopSuccessPopup({
+    Key? key,
+    required this.onDismissed,
+  }) : super(key: key);
 
   @override
   ConsumerState<_TopSuccessPopup> createState() => _TopSuccessPopupState();
@@ -639,7 +642,7 @@ class _TopSuccessPopupState extends ConsumerState<_TopSuccessPopup> with SingleT
                 borderRadius: BorderRadius.circular(12),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.1490),
+                    color: Colors.black.withOpacity(0.15),
                     blurRadius: 10,
                     offset: const Offset(0, 4),
                   ),
@@ -651,7 +654,7 @@ class _TopSuccessPopupState extends ConsumerState<_TopSuccessPopup> with SingleT
                     width: 36,
                     height: 36,
                     decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.2510),
+                      color: Colors.white.withOpacity(0.25),
                       shape: BoxShape.circle,
                     ),
                     child: const Icon(
